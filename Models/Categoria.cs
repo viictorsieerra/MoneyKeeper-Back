@@ -1,6 +1,6 @@
 namespace Models;
 
-class Categoria
+public class Categoria
 {
     public int _idCategoria { get; set; }
     public string _nombre { get; set; }

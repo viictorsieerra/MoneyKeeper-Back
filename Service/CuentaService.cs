@@ -3,9 +3,9 @@ using Microsoft.Data.SqlClient;
 using Repositories;
 namespace Services;
 
-class CuentaService : ICuentaService
+public class CuentaService : ICuentaService
 {
-    private readonly ICuentaRepository? _repository;
+    private readonly ICuentaRepository _repository;
 
     public CuentaService(ICuentaRepository repository)
     {
