@@ -1,7 +1,7 @@
 using Models;
 namespace Repositories;
 
-interface ITransaccionRepository
+public interface ITransaccionRepository
 {
     Task<List<Transaccion>> GetAllAsync();
     Task<Transaccion?> GetByIdAsync(int id);

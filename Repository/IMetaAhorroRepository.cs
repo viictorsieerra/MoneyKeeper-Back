@@ -1,7 +1,7 @@
 using Models;
 namespace Repositories;
 
-interface IMetaAhorroRepository
+public interface IMetaAhorroRepository
 {
     Task<List<MetaAhorro>> GetAllAsync();
     Task<MetaAhorro?> GetByIdAsync(int id);
