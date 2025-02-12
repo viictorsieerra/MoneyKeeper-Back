@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 using Repositories;
 namespace Services;
 
-class MetaAhorroService : IMetaAhorroService
+public class MetaAhorroService : IMetaAhorroService
 {
     private readonly IMetaAhorroRepository? _repository;
 
@@ -14,7 +14,7 @@ class MetaAhorroService : IMetaAhorroService
 
     public async Task<List<MetaAhorro>> GetAllAsync()
     {
-        List<Cuenta> metas = await _repository.GetAllAsync();
+        List<MetaAhorro> metas = await _repository.GetAllAsync();
         return metas;
     }
 
@@ -38,14 +38,14 @@ class MetaAhorroService : IMetaAhorroService
 
     public async Task<MetaAhorro> UpdateAsync(MetaAhorro updatedMetaAhorro)
     {
-        var existingMetaAhorro = await _repository.GetByIdAsync(updatedMetaAhorro._idMetaAhorro);
+        var existingMetaAhorro = await _repository.GetByIdAsync(updatedMetaAhorro._idMeta);
 
         if (existingMetaAhorro == null)
         {
             throw new Exception("NO SE HAN ENCONTRADO DATOS");
         }
 
-        // Actualizar cuenta
+        // Actualizar MetaAhorro
         existingMetaAhorro._idUsuario = updatedMetaAhorro._idUsuario;
         existingMetaAhorro._nombreMeta = updatedMetaAhorro._nombreMeta;
         existingMetaAhorro._descripcionMeta = updatedMetaAhorro._descripcionMeta;

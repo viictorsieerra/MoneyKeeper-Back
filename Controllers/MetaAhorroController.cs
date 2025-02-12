@@ -16,13 +16,14 @@ public class MetaAhorroController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<MetaAhorro>>> GetMetaAhorro()
+    public async Task<ActionResult<List<MetaAhorro>>> GetMetas()
     {
         List<MetaAhorro> metas = await _service.GetAllAsync();
         return Ok(metas);
     }
+
     [HttpGet("{id}")]
-    public async Task<ActionResult<MetaAhorro>> GetMetaAhorro(int id)
+    public async Task<ActionResult<MetaAhorro>> GetMeta(int id)
     {
         MetaAhorro meta = await _service.GetByIdAsync(id);
         if (meta == null)
@@ -33,14 +34,14 @@ public class MetaAhorroController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<MetaAhorro>> CreateMetaAhorro(MetaAhorro meta)
+    public async Task<ActionResult<MetaAhorro>> CreateMeta(MetaAhorro meta)
     {
         await _service.AddAsync(meta);
-        return CreatedAtAction(nameof(GetMetaAhorro), new { id = MetaAhorro._idMeta }, meta);
+        return CreatedAtAction(nameof(GetMeta), new { id = meta._idMeta }, meta);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateMetaAhorro(int idMeta, MetaAhorro updatedMetaAhorro)
+    public async Task<ActionResult<MetaAhorro>> UpdateMeta(int idMeta, MetaAhorro updatedMetaAhorro)
     {
         var existingMetaAhorro = await _service.GetByIdAsync(idMeta);
         if (existingMetaAhorro == null)

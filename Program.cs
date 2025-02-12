@@ -16,6 +16,31 @@ builder.Services.AddScoped<ICuentaRepository, CuentaRepository>(
 builder.Services.AddScoped<ICuentaService, CuentaService>();
 
 
+builder.Services.AddScoped<IMetaAhorroRepository, MetaAhorroRepository>(
+    provider => new MetaAhorroRepository(connectionString)
+);
+
+builder.Services.AddScoped<IMetaAhorroService, MetaAhorroService>();
+
+builder.Services.AddScoped<ITransaccionRepository, TransaccionRepository>(
+    provider => new TransaccionRepository(connectionString)
+);
+
+builder.Services.AddScoped<ITransaccionService, TransaccionService>();
+
+builder.Services.AddScoped<IReciboRepository, ReciboRepository>(
+    provider => new ReciboRepository(connectionString)
+);
+
+builder.Services.AddScoped<IReciboService, ReciboService>();
+
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>(
+    provider => new UsuarioRepository(connectionString)
+);
+
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
