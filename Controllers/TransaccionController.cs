@@ -10,7 +10,7 @@ public class TransaccionController : ControllerBase
 
     private readonly ITransaccionService _service;
 
-    public TransaccionController(ITransaccion service)
+    public TransaccionController(ITransaccionService service)
     {
         _service = service;
     }

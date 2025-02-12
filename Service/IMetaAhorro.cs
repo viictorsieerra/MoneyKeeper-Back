@@ -3,7 +3,7 @@ using Models;
 namespace Services;
 
 
-interface IMetaAhorroService
+public interface IMetaAhorroService
 {
     Task<List<MetaAhorro>> GetAllAsync();
     Task<MetaAhorro?> GetByIdAsync(int idMetaAhorro);

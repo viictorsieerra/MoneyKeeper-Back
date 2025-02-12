@@ -3,7 +3,7 @@ using Models;
 namespace Services;
 
 
-interface IReciboService
+public interface IReciboService
 {
     Task<List<Recibo>> GetAllAsync();
     Task<Recibo?> GetByIdAsync(int idRecibo);

@@ -3,7 +3,7 @@ using Models;
 namespace Services;
 
 
-interface ITransaccionService
+public interface ITransaccionService
 {
     Task<List<Transaccion>> GetAllAsync();
     Task<Transaccion?> GetByIdAsync(int idTransaccion);
