@@ -21,6 +21,7 @@ public class CuentaController : ControllerBase
         List<Cuenta> cuentas = await _service.GetAllAsync();
         return Ok(cuentas);
     }
+    
     [HttpGet("{id}")]
     public async Task<ActionResult<Cuenta>> GetCuenta(int id)
     {

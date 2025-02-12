@@ -2,7 +2,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Models;
 
-class Recibo
+public class Recibo
 {
     public int _idRecibo { get; set; }
     public int _idUsuario { get; set; }

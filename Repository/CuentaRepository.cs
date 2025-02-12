@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Repositories;
 
-class CuentaRepository : ICuentaRepository
+public class CuentaRepository : ICuentaRepository
 {
     private readonly string? _connectionString;
 

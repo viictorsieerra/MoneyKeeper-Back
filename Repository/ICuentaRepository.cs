@@ -1,7 +1,7 @@
 using Models;
 namespace Repositories;
 
-interface ICuentaRepository
+public interface ICuentaRepository
 {
     Task<List<Cuenta>> GetAllAsync();
     Task<Cuenta?> GetByIdAsync(int id);
