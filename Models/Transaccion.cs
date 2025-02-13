@@ -2,7 +2,7 @@ using System.Data;
 
 namespace Models;
 
-class Transaccion
+public class Transaccion
 {
     public int _idTransaccion {get;set;}
     public int _idUsuario { get; set; }

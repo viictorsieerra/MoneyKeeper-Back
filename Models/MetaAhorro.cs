@@ -1,6 +1,6 @@
 namespace Models;
 
-class MetaAhorro
+public class MetaAhorro
 {
     public int _idMeta {get;set;}
     public int _idUsuario { get; set; }
