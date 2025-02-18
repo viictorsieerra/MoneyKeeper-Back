@@ -50,7 +50,8 @@ class TransaccionService : ITransaccionService
         existingTransaccion._idCategoria = updatedTransaccion._idCategoria;
         existingTransaccion._cantidad = updatedTransaccion._cantidad;
         existingTransaccion._descripcionTransaccion = updatedTransaccion._descripcionTransaccion;
-        existingTransaccion._fec_Transaccion = updatedTransaccion._fec_Transaccion;
+        existingTransaccion._fecTransaccion = updatedTransaccion._fecTransaccion;
+        existingTransaccion._tipoMovimiento = updatedTransaccion._tipoMovimiento;
         
         
 

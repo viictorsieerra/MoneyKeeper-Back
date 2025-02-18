@@ -20,7 +20,7 @@ class MetaAhorroRepository : IMetaAhorroRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idMeta, idUsuario, Nombre, DescripcionMeta, DineroObjetivo, DineroActual, Activo, Fec_CreacionMeta, Fec_ObjetivoMeta FROM MetaAhorro";
+            string query = "SELECT idMeta, idUsuario, Nombre, Descripcion, DineroObjetivo, DineroActual, Activo, FecCreacion, FecObjetivo FROM MetaAhorro";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -57,7 +57,7 @@ class MetaAhorroRepository : IMetaAhorroRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idMeta, idUsuario, Nombre, DescripcionMeta, DineroObjetivo, DineroActual, Activo, Fec_CreacionMeta, Fec_ObjetivoMeta FROM MetaAhorro WHERE idMeta = @idMeta";
+            string query = "SELECT idMeta, idUsuario, Nombre, Descripcion, DineroObjetivo, DineroActual, Activo, FecCreacion, FecObjetivo FROM MetaAhorro WHERE idMeta = @idMeta";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -92,7 +92,7 @@ class MetaAhorroRepository : IMetaAhorroRepository
         {
             await connection.OpenAsync();
 
-            string query = "INSERT INTO MetaAhorro (idUsuario, Nombre, DescripcionMeta, DineroObjetivo, DineroActual, Activo, Fec_CreacionMeta, Fec_ObjetivoMeta) VALUES (@idUsuario, @Nombre, @Descripcion, @DineroObjetivo, @DineroActual, @Activo, @Fec_CreacionMeta, @Fec_ObjetivoMeta)";
+            string query = "INSERT INTO MetaAhorro (idUsuario, Nombre, Descripcion, DineroObjetivo, DineroActual, Activo, FecCreacion, FecObjetivo) VALUES (@idUsuario, @Nombre, @Descripcion, @DineroObjetivo, @DineroActual, @Activo, @FecCreacion, @FecObjetivo)";
             
             using (var command = new SqlCommand(query, connection))
             {
@@ -116,7 +116,7 @@ class MetaAhorroRepository : IMetaAhorroRepository
         {
             await connection.OpenAsync();
 
-            string query = "UPDATE MetaAhorro SET Nombre = @Nombre, Descripcion = @Descripcion, DineroObjetivo = @DineroObjetivo, DineroActual = @DineroActual, Activo = @Activo, Fec_ObjetivoMeta = @Fec_ObjetivoMeta WHERE idMeta = @idMeta";
+            string query = "UPDATE MetaAhorro SET Nombre = @Nombre, Descripcion = @Descripcion, DineroObjetivo = @DineroObjetivo, DineroActual = @DineroActual, Activo = @Activo, FecObjetivo = @FecObjetivo WHERE idMeta = @idMeta";
             
             using (var command = new SqlCommand(query, connection))
             {
@@ -125,7 +125,7 @@ class MetaAhorroRepository : IMetaAhorroRepository
                 command.Parameters.AddWithValue("@DineroObjetivo", meta._dineroObjetivo);
                 command.Parameters.AddWithValue("@DineroActual", meta._dineroActual);
                 command.Parameters.AddWithValue("@Activo", meta._activoMeta);
-                command.Parameters.AddWithValue("@Fec_ObjetivoMeta", meta._fechaObjetivoMeta);
+                command.Parameters.AddWithValue("@FecObjetivo", meta._fechaObjetivoMeta);
                 command.Parameters.AddWithValue("@idMeta", meta._idMeta);
 
                 await command.ExecuteNonQueryAsync();

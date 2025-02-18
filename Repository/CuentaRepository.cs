@@ -20,7 +20,7 @@ public class CuentaRepository : ICuentaRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idCuenta, idUsuario, Dinero, Activo, FechaCreacion FROM Cuentas";
+            string query = "SELECT idCuenta, idUsuario, Dinero, Activo, FecCreacion FROM Cuentas";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -53,7 +53,7 @@ public class CuentaRepository : ICuentaRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idCuenta, idUsuario, Dinero, Activo, FechaCreacion FROM Cuentas WHERE idCuenta = @idCuenta";
+            string query = "SELECT idCuenta, idUsuario, Dinero, Activo, FecCreacion FROM Cuentas WHERE idCuenta = @idCuenta";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -86,7 +86,7 @@ public class CuentaRepository : ICuentaRepository
         {
             await connection.OpenAsync();
 
-            string query = "INSERT INTO Cuentas (idUsuario, Dinero, Activo, FechaCreacion) VALUES (@idUsuario, @Dinero, @Activo, @FechaCreacion)";
+            string query = "INSERT INTO Cuentas (idUsuario, Dinero, Activo, FecCreacion) VALUES (@idUsuario, @Dinero, @Activo, @FecCreacion)";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@idUsuario", cuenta._idUsuario);
@@ -105,7 +105,7 @@ public class CuentaRepository : ICuentaRepository
         {
             await connection.OpenAsync();
 
-            string query = "UPDATE Cuentas SET idUsuario = @idUsuario , Dinero = @Dinero, Activo = @Activo, FechaCreacion = @FechaCreacion WHERE idCuenta = @idCuenta";
+            string query = "UPDATE Cuentas SET idUsuario = @idUsuario , Dinero = @Dinero, Activo = @Activo, FecCreacion = @FecCreacion WHERE idCuenta = @idCuenta";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@idCuenta", cuenta._idCuenta);

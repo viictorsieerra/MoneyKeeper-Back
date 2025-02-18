@@ -20,7 +20,7 @@ class TransaccionRepository : ITransaccionRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idTransaccion, idUsuario, idCategoria, Cantidad, Descripcion, Fec_transaccion FROM Transaccion";
+            string query = "SELECT idTransaccion, idUsuario, idCategoria, Cantidad, Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -35,7 +35,8 @@ class TransaccionRepository : ITransaccionRepository
                             _idCategoria = reader.GetInt32(2),
                             _cantidad = reader.GetInt32(3),
                             _descripcionTransaccion = reader.GetString(4),
-                            _fec_Transaccion = reader.GetDateTime(5)
+                            _fecTransaccion = reader.GetDateTime(5),
+                            _tipoMovimiento = reader.GetString(6).Trim()[0],
                         };
 
                         transacciones.Add(transaccion);
@@ -54,7 +55,7 @@ class TransaccionRepository : ITransaccionRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idTransaccion, idUsuario, idCategoria, Cantidad, Descripcion, Fec_transaccion FROM Transaccion FROM Transaccion WHERE idTransaccion = @idTransaccion";
+            string query = "SELECT idTransaccion, idUsuario, idCategoria, Cantidad, Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion WHERE idTransaccion = @idTransaccion";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -71,7 +72,8 @@ class TransaccionRepository : ITransaccionRepository
                             _idCategoria = reader.GetInt32(2),
                             _cantidad = reader.GetInt32(3),
                             _descripcionTransaccion = reader.GetString(4),
-                            _fec_Transaccion = reader.GetDateTime(5)
+                            _fecTransaccion = reader.GetDateTime(5),
+                            _tipoMovimiento = reader.GetString(6).Trim()[0]
                         };
                     }
                 }
@@ -87,14 +89,15 @@ class TransaccionRepository : ITransaccionRepository
         {
             await connection.OpenAsync();
 
-            string query = "INSERT INTO Transaccion (idUsuario, idCategoria, Cantidad, Descripcion, Fec_transaccion) VALUES (@IidUsuario, @idCategoria, @Cantidad, @Descripcion, @Fec_transaccion)";
+            string query = "INSERT INTO Transaccion (idUsuario, idCategoria, Cantidad, Descripcion, FecTransaccion, TipoMovimiento) VALUES (@IidUsuario, @idCategoria, @Cantidad, @Descripcion, @FecTransaccion, @TipoMovimiento)";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@IidUsuario", transaccion._idUsuario);
                 command.Parameters.AddWithValue("@idCategoria", transaccion._idCategoria);
                 command.Parameters.AddWithValue("@Cantidad", transaccion._cantidad);
                 command.Parameters.AddWithValue("@Descripcion", transaccion._descripcionTransaccion);
-                command.Parameters.AddWithValue("@Fec_transaccion", transaccion._fec_Transaccion);
+                command.Parameters.AddWithValue("@FecTransaccion", transaccion._fecTransaccion);
+                command.Parameters.AddWithValue("@TipoMovimiento",transaccion._tipoMovimiento);
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -107,14 +110,15 @@ class TransaccionRepository : ITransaccionRepository
         {
             await connection.OpenAsync();
 
-            string query = "UPDATE Transaccion SET idUsuario = @IidUsuario, idCategoria = @idCategoria, Cantidad = @Cantidad, Descripcion = @Descripcion, Fec_transaccion = @Fec_transaccion WHERE idTransaccion = @idTransaccion";
+            string query = "UPDATE Transaccion SET idUsuario = @IidUsuario, idCategoria = @idCategoria, Cantidad = @Cantidad, Descripcion = @Descripcion, FecTransaccion = @FecTransaccion, TipoMovimiento = @TipoMovimiento  WHERE idTransaccion = @idTransaccion";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@IidUsuario", transaccion._idUsuario);
                 command.Parameters.AddWithValue("@idCategoria", transaccion._idCategoria);
                 command.Parameters.AddWithValue("@Cantidad", transaccion._cantidad);
                 command.Parameters.AddWithValue("@Descripcion", transaccion._descripcionTransaccion);
-                command.Parameters.AddWithValue("@Fec_transaccion", transaccion._fec_Transaccion);
+                command.Parameters.AddWithValue("@FecTransaccion", transaccion._fecTransaccion);
+                command.Parameters.AddWithValue("@TipoMovimiento", transaccion._tipoMovimiento);
                 command.Parameters.AddWithValue("@idTransaccion", transaccion._idTransaccion);
 
                 await command.ExecuteNonQueryAsync();

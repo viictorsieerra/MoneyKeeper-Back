@@ -20,7 +20,7 @@ class UsuarioRepository : IUsuarioRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idUsuario, Nombre, Apellido, Correo, dni FROM Usuario";
+            string query = "SELECT idUsuario, Nombre, Apellido, Correo, DNI, FecNacimiento FROM Usuario";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -34,7 +34,8 @@ class UsuarioRepository : IUsuarioRepository
                             _nombre = reader.GetString(1),
                             _apellido = reader.GetString(2),
                             _correo = reader.GetString(3),
-                            _dni = reader.GetString(4)
+                            _dni = reader.GetString(4),
+                            _fecNacimiento = reader.GetDateTime(5)
                         };
 
                         usuarios.Add(usuario);
@@ -53,7 +54,7 @@ class UsuarioRepository : IUsuarioRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idUsuario, Nombre, Apellido, Correo, dni FROM Usuario WHERE idUsuario = @idUsuario";
+            string query = "SELECT idUsuario, Nombre, Apellido, Correo, DNI, FecNacimiento FROM Usuario WHERE idUsuario = @idUsuario";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -69,7 +70,8 @@ class UsuarioRepository : IUsuarioRepository
                             _nombre = reader.GetString(1),
                             _apellido = reader.GetString(2),
                             _correo = reader.GetString(3),
-                            _dni = reader.GetString(4)
+                            _dni = reader.GetString(4),
+                            _fecNacimiento = reader.GetDateTime(5)
                         };
                     }
                 }
@@ -85,13 +87,14 @@ class UsuarioRepository : IUsuarioRepository
         {
             await connection.OpenAsync();
 
-            string query = "INSERT INTO Usuario (Nombre, Apellido, Correo, dni) VALUES (@Nombre, @Apellido, @Correo, @dni)";
+            string query = "INSERT INTO Usuario (Nombre, Apellido, Correo, DNI, FecNacimiento) VALUES (@Nombre, @Apellido, @Correo, @DNI, @FecNacimiento)";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Nombre", usuario._nombre);
                 command.Parameters.AddWithValue("@Apellido", usuario._apellido);
                 command.Parameters.AddWithValue("@Correo", usuario._correo);
                 command.Parameters.AddWithValue("@dni", usuario._dni);
+                command.Parameters.AddWithValue("@FecNacimiento", usuario._fecNacimiento);
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -104,7 +107,7 @@ class UsuarioRepository : IUsuarioRepository
         {
             await connection.OpenAsync();
 
-            string query = "UPDATE Usuario SET Nombre = @Nombre, Apellido = @Apellido, Correo = @Correo, dni = @DNI WHERE idUsuario = @idUsuario";
+            string query = "UPDATE Usuario SET Nombre = @Nombre, Apellido = @Apellido, Correo = @Correo, DNI = @DNI, FecNacimiento = @FecNacimiento WHERE idUsuario = @idUsuario";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Nombre", usuario._nombre);
@@ -112,6 +115,7 @@ class UsuarioRepository : IUsuarioRepository
                 command.Parameters.AddWithValue("@Correo", usuario._correo);
                 command.Parameters.AddWithValue("@dni", usuario._dni);
                 command.Parameters.AddWithValue("@idUsuario", usuario._idUsuario);
+                command.Parameters.AddWithValue("@FecNacimiento", usuario._fecNacimiento);
 
                 await command.ExecuteNonQueryAsync();
             }
