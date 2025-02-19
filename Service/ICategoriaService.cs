@@ -10,4 +10,5 @@ public interface ICategoriaService
     Task <Categoria>AddAsync(Categoria bebida);
     Task <Categoria>UpdateAsync(Categoria bebida);
     Task DeleteAsync(int id);
+    Task InicializarDatosAsync();
 }

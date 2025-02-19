@@ -8,4 +8,5 @@ interface IReciboRepository
     Task AddAsync(Recibo recibo);
     Task UpdateAsync(Recibo recibo);
     Task DeleteAsync(int id);
+    Task InicializarDatosAsync();
 }

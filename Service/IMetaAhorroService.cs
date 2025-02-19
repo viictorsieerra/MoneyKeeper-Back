@@ -10,4 +10,5 @@ public interface IMetaAhorroService
     Task <MetaAhorro>AddAsync(MetaAhorro meta);
     Task <MetaAhorro>UpdateAsync(MetaAhorro meta);
     Task DeleteAsync(int id);
+    Task InicializarDatosAsync();
 }

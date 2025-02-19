@@ -8,4 +8,5 @@ public interface ITransaccionRepository
     Task AddAsync(Transaccion transaccion);
     Task UpdateAsync(Transaccion transaccion);
     Task DeleteAsync(int id);
+    Task InicializarDatosAsync();
 }

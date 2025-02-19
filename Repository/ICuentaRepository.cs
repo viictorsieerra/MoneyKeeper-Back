@@ -8,4 +8,5 @@ public interface ICuentaRepository
     Task AddAsync(Cuenta cuenta);
     Task UpdateAsync(Cuenta cuenta);
     Task DeleteAsync(int id);
+    Task InicializarDatosAsync();
 }

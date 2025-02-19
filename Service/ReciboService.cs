@@ -50,7 +50,7 @@ class ReciboService : IReciboService
         existingRecibo._idCuenta = updatedRecibo._idCuenta;
         existingRecibo._dineroRecibo = updatedRecibo._dineroRecibo;
         existingRecibo._activa = updatedRecibo._activa;
-        existingRecibo._fec_Creacion = updatedRecibo._fec_Creacion;
+        existingRecibo._fecRecibo = updatedRecibo._fecRecibo;
         
         
 
@@ -66,5 +66,9 @@ class ReciboService : IReciboService
 
     }
 
+    public async Task InicializarDatosAsync()
+    {
+        await _repository.InicializarDatosAsync();
+    }
 
 }

@@ -59,4 +59,11 @@ public class CategoriaController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost("InicializarDatos")]
+    public async Task<IActionResult> InicializarDatos()
+    {
+        await _service.InicializarDatosAsync();
+        return Ok();
+    }
+
 }

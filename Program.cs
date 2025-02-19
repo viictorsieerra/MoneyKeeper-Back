@@ -40,6 +40,11 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>(
 
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>(
+    provider => new CategoriaRepository(connectionString)
+);
+
+builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 
 
 builder.Services.AddControllers();

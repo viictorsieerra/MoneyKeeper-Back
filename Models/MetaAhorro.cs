@@ -6,8 +6,8 @@ public class MetaAhorro
     public int _idUsuario { get; set; }
     public string? _nombreMeta { get; set; }
     public string? _descripcionMeta {get;set;}
-    public int _dineroObjetivo {get;set;}
-    public int _dineroActual {get;set;}
+    public decimal _dineroObjetivo {get;set;}
+    public decimal _dineroActual {get;set;}
     public bool _activoMeta {get; set;} = false;
     public DateTime _fechaCreacionMeta {get; set;} = DateTime.Now;
     public DateTime _fechaObjetivoMeta {get; set;} = DateTime.Now;
@@ -15,7 +15,7 @@ public class MetaAhorro
     public MetaAhorro()
     {}
 
-    public MetaAhorro(int idMeta, int idUsuario, string nombreMeta, string descripcionMeta, int dineroObjetivo, int dineroActual, bool activoMeta, DateTime fechaCreacionMeta, DateTime fechaObjetivoMeta)
+    public MetaAhorro(int idMeta, int idUsuario, string nombreMeta, string descripcionMeta, decimal dineroObjetivo, decimal dineroActual, bool activoMeta, DateTime fechaCreacionMeta, DateTime fechaObjetivoMeta)
     {
         _idMeta = idMeta;
         _idUsuario = idUsuario;

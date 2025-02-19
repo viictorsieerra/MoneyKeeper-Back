@@ -10,4 +10,5 @@ public interface ICuentaService
     Task <Cuenta>AddAsync(Cuenta cuenta);
     Task <Cuenta>UpdateAsync(Cuenta cuenta);
     Task DeleteAsync(int id);
+    Task InicializarDatosAsync();
 }

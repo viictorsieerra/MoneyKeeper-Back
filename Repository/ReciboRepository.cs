@@ -20,7 +20,7 @@ class ReciboRepository : IReciboRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idRecibo, idUsuario, idCuenta, Dinero, Activo, Fec_Creacion FROM Recibos";
+            string query = "SELECT idRecibo, idUsuario, idCuenta, Dinero, Activo, FecRecibo FROM Recibos";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -30,12 +30,12 @@ class ReciboRepository : IReciboRepository
                     {
                         Recibo recibo = new Recibo
                         {
-                           _idRecibo = reader.GetInt32(0),
+                            _idRecibo = reader.GetInt32(0),
                             _idUsuario = reader.GetInt32(1),
-                            _idCuenta= reader.GetInt32(2),
-                            _dineroRecibo= reader.GetDecimal(3),
-                            _activa= reader.GetBoolean(4),
-                            _fec_Creacion = reader.GetDateTime(5)
+                            _idCuenta = reader.GetInt32(2),
+                            _dineroRecibo = reader.GetDecimal(3),
+                            _activa = reader.GetBoolean(4),
+                            _fecRecibo = reader.GetDateTime(5)
                         };
 
                         recibos.Add(recibo);
@@ -54,7 +54,7 @@ class ReciboRepository : IReciboRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idRecibo, idUsuario, idCuenta, Dinero, Activo, Fec_Creacion FROM Recibos WHERE idRecibo = @idRecibo";
+            string query = "SELECT idRecibo, idUsuario, idCuenta, Dinero, Activo, FecRecibo FROM Recibos WHERE idRecibo = @idRecibo";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -66,12 +66,12 @@ class ReciboRepository : IReciboRepository
                     {
                         recibo = new Recibo
                         {
-                         _idRecibo = reader.GetInt32(0),
+                            _idRecibo = reader.GetInt32(0),
                             _idUsuario = reader.GetInt32(1),
-                            _idCuenta= reader.GetInt32(2),
-                            _dineroRecibo= reader.GetDecimal(3),
-                            _activa= reader.GetBoolean(4),
-                            _fec_Creacion = reader.GetDateTime(5)
+                            _idCuenta = reader.GetInt32(2),
+                            _dineroRecibo = reader.GetDecimal(3),
+                            _activa = reader.GetBoolean(4),
+                            _fecRecibo = reader.GetDateTime(5)
                         };
                     }
                 }
@@ -86,14 +86,14 @@ class ReciboRepository : IReciboRepository
         {
             await connection.OpenAsync();
 
-            string query = "INSERT INTO Recibos (idUsuario, idCuenta, Dinero, Activo, Fec_Creacion) VALUES (@idUsuario, @idCuenta, @Dinero, @Activo, @Fec_Creacion)";
+            string query = "INSERT INTO Recibos (idUsuario, idCuenta, Dinero, Activo, FecRecibo) VALUES (@idUsuario, @idCuenta, @Dinero, @Activo, @FecRecibo)";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@ID_Usuario", recibo._idUsuario);
                 command.Parameters.AddWithValue("@ID_Cuenta", recibo._idCuenta);
                 command.Parameters.AddWithValue("@Dinero", recibo._dineroRecibo);
                 command.Parameters.AddWithValue("@Activo", recibo._activa);
-                command.Parameters.AddWithValue("@Fec_Creacion", recibo._fec_Creacion);
+                command.Parameters.AddWithValue("@FecRecibo", recibo._fecRecibo);
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -106,14 +106,14 @@ class ReciboRepository : IReciboRepository
         {
             await connection.OpenAsync();
 
-            string query = "UPDATE Recibos SET idUsuario = @idUsuario, idCuenta = @idCuenta, Dinero = @Dinero, Activo = @Activo, Fec_Creacion = @Fec_Creacion WHERE idRecibo = @idRecibo";
+            string query = "UPDATE Recibos SET idUsuario = @idUsuario, idCuenta = @idCuenta, Dinero = @Dinero, Activo = @Activo, FecRecibo = @FecRecibo WHERE idRecibo = @idRecibo";
             using (var command = new SqlCommand(query, connection))
             {
-                 command.Parameters.AddWithValue("@ID_Usuario", recibo._idUsuario);
+                command.Parameters.AddWithValue("@ID_Usuario", recibo._idUsuario);
                 command.Parameters.AddWithValue("@ID_Cuenta", recibo._idCuenta);
                 command.Parameters.AddWithValue("@Dinero", recibo._dineroRecibo);
                 command.Parameters.AddWithValue("@Activo", recibo._activa);
-                command.Parameters.AddWithValue("@Fec_Creacion", recibo._fec_Creacion);
+                command.Parameters.AddWithValue("@FecRecibo", recibo._fecRecibo);
                 command.Parameters.AddWithValue("@ID_Recibo", recibo._idRecibo);
 
                 await command.ExecuteNonQueryAsync();
@@ -132,6 +132,21 @@ class ReciboRepository : IReciboRepository
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@idRecibo", idRecibo);
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+    }
+
+    public async Task InicializarDatosAsync()
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+
+            string query = @"INSERT INTO Recibos (IdCuenta, IdUsuario, Dinero) VALUES (2, 3, 1200.00), (3, 4, 800.00);";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
                 await command.ExecuteNonQueryAsync();
             }
         }

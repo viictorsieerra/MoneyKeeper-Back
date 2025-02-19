@@ -20,7 +20,7 @@ public class CuentaRepository : ICuentaRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idCuenta, idUsuario, Dinero, Activo, FecCreacion FROM Cuentas";
+            string query = "SELECT idCuenta, idUsuario, Dinero, Activo, FecCreacion FROM Cuenta";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -131,6 +131,21 @@ public class CuentaRepository : ICuentaRepository
             {
                 command.Parameters.AddWithValue("@idCuenta", idCuenta);
 
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+    }
+
+        public async Task InicializarDatosAsync()
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+
+            string query = @"INSERT INTO Cuenta (IdUsuario, Dinero) VALUES (3, 5000.00), (4, 3200.50);";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
                 await command.ExecuteNonQueryAsync();
             }
         }

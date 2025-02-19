@@ -54,7 +54,7 @@ public class MetaAhorroService : IMetaAhorroService
         existingMetaAhorro._activoMeta = updatedMetaAhorro._activoMeta;
         existingMetaAhorro._fechaCreacionMeta = updatedMetaAhorro._fechaCreacionMeta;
         existingMetaAhorro._fechaObjetivoMeta = updatedMetaAhorro._fechaObjetivoMeta;
-        
+
 
         await _repository.UpdateAsync(existingMetaAhorro);
 
@@ -68,5 +68,9 @@ public class MetaAhorroService : IMetaAhorroService
 
     }
 
+    public async Task InicializarDatosAsync()
+    {
+        await _repository.InicializarDatosAsync();
+    }
 
 }

@@ -34,11 +34,11 @@ class MetaAhorroRepository : IMetaAhorroRepository
                             _idUsuario = reader.GetInt32(1),
                             _nombreMeta = reader.GetString(2),
                             _descripcionMeta = reader.GetString(3),
-                            _dineroObjetivo = reader.GetInt32(4),
-                            _dineroActual = reader.GetInt32(5),
+                            _dineroObjetivo = reader.GetDecimal(4),
+                            _dineroActual = reader.GetDecimal(5),
                             _activoMeta = reader.GetBoolean(6),
                             _fechaCreacionMeta = reader.GetDateTime(7),
-                        _fechaObjetivoMeta = reader.GetDateTime(8)
+                            _fechaObjetivoMeta = reader.GetDateTime(8)
                         };
 
                         metas.Add(meta);
@@ -73,11 +73,11 @@ class MetaAhorroRepository : IMetaAhorroRepository
                             _idUsuario = reader.GetInt32(1),
                             _nombreMeta = reader.GetString(2),
                             _descripcionMeta = reader.GetString(3),
-                            _dineroObjetivo = reader.GetInt32(4),
-                            _dineroActual = reader.GetInt32(5),
+                            _dineroObjetivo = reader.GetDecimal(4),
+                            _dineroActual = reader.GetDecimal(5),
                             _activoMeta = reader.GetBoolean(6),
                             _fechaCreacionMeta = reader.GetDateTime(7),
-                        _fechaObjetivoMeta = reader.GetDateTime(8)
+                            _fechaObjetivoMeta = reader.GetDateTime(8)
                         };
                     }
                 }
@@ -93,7 +93,7 @@ class MetaAhorroRepository : IMetaAhorroRepository
             await connection.OpenAsync();
 
             string query = "INSERT INTO MetaAhorro (idUsuario, Nombre, Descripcion, DineroObjetivo, DineroActual, Activo, FecCreacion, FecObjetivo) VALUES (@idUsuario, @Nombre, @Descripcion, @DineroObjetivo, @DineroActual, @Activo, @FecCreacion, @FecObjetivo)";
-            
+
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@ID_Usuario_FK", meta._idMeta);
@@ -117,7 +117,7 @@ class MetaAhorroRepository : IMetaAhorroRepository
             await connection.OpenAsync();
 
             string query = "UPDATE MetaAhorro SET Nombre = @Nombre, Descripcion = @Descripcion, DineroObjetivo = @DineroObjetivo, DineroActual = @DineroActual, Activo = @Activo, FecObjetivo = @FecObjetivo WHERE idMeta = @idMeta";
-            
+
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Nombre", meta._nombreMeta);
@@ -145,6 +145,23 @@ class MetaAhorroRepository : IMetaAhorroRepository
             {
                 command.Parameters.AddWithValue("@idMeta", idMeta);
 
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+    }
+
+    public async Task InicializarDatosAsync()
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+
+            string query = @"INSERT INTO MetaAhorro (IdUsuario, Nombre, Descripcion, DineroObjetivo, DineroActual, FecObjetivo) VALUES
+                            (3, 'Mundial 2030', 'Mundial de España de fútbol 2030', 3000.00, 500.00, '2030-04-01'),
+                            (4, 'Comprar un coche', 'Ahorro para un coche nuevo', 10000.00, 2000.00, '2027-06-15');";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
                 await command.ExecuteNonQueryAsync();
             }
         }

@@ -20,7 +20,7 @@ class CategoriaRepository : ICategoriaRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idCategoria, Nombre, Descripcion FROM Cuentas";
+            string query = "SELECT idCategoria, Nombre, Descripcion FROM Categoria";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -31,8 +31,8 @@ class CategoriaRepository : ICategoriaRepository
                         Categoria categoria = new Categoria
                         {
                             _idCategoria = reader.GetInt32(0),
-                           _nombre = reader.GetString(30),
-                            _descripcion = reader.GetString(60)
+                            _nombre = reader.GetString(1),
+                            _descripcion = reader.GetString(2)
                         };
 
                         categorias.Add(categoria);
@@ -63,8 +63,8 @@ class CategoriaRepository : ICategoriaRepository
                     {
                         categoria = new Categoria
                         {
-                             _idCategoria = reader.GetInt32(0),
-                           _nombre = reader.GetString(30),
+                            _idCategoria = reader.GetInt32(0),
+                            _nombre = reader.GetString(30),
                             _descripcion = reader.GetString(60)
                         };
                     }
@@ -127,5 +127,19 @@ class CategoriaRepository : ICategoriaRepository
         }
     }
 
+    public async Task InicializarDatosAsync()
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
 
+            string query = @"INSERT INTO Categoria (Nombre, Descripcion) VALUES ('Alimentación', 'Gastos en comida y supermercado'),
+                            ('Transporte', 'Gastos en transporte público y combustible'), ('Ocio', 'Gastos en entretenimiento y recreación');";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+    }
 }

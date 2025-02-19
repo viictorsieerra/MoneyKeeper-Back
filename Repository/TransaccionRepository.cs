@@ -33,7 +33,7 @@ class TransaccionRepository : ITransaccionRepository
                             _idTransaccion = reader.GetInt32(0),
                             _idUsuario = reader.GetInt32(1),
                             _idCategoria = reader.GetInt32(2),
-                            _cantidad = reader.GetInt32(3),
+                            _cantidad = reader.GetDecimal(3),
                             _descripcionTransaccion = reader.GetString(4),
                             _fecTransaccion = reader.GetDateTime(5),
                             _tipoMovimiento = reader.GetString(6).Trim()[0],
@@ -66,11 +66,11 @@ class TransaccionRepository : ITransaccionRepository
                     while (await reader.ReadAsync())
                     {
                         transaccion = new Transaccion
-                        { 
+                        {
                             _idTransaccion = reader.GetInt32(0),
                             _idUsuario = reader.GetInt32(1),
                             _idCategoria = reader.GetInt32(2),
-                            _cantidad = reader.GetInt32(3),
+                            _cantidad = reader.GetDecimal(3),
                             _descripcionTransaccion = reader.GetString(4),
                             _fecTransaccion = reader.GetDateTime(5),
                             _tipoMovimiento = reader.GetString(6).Trim()[0]
@@ -97,7 +97,7 @@ class TransaccionRepository : ITransaccionRepository
                 command.Parameters.AddWithValue("@Cantidad", transaccion._cantidad);
                 command.Parameters.AddWithValue("@Descripcion", transaccion._descripcionTransaccion);
                 command.Parameters.AddWithValue("@FecTransaccion", transaccion._fecTransaccion);
-                command.Parameters.AddWithValue("@TipoMovimiento",transaccion._tipoMovimiento);
+                command.Parameters.AddWithValue("@TipoMovimiento", transaccion._tipoMovimiento);
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -138,6 +138,21 @@ class TransaccionRepository : ITransaccionRepository
             {
                 command.Parameters.AddWithValue("@idTransaccion", idTransaccion);
 
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+    }
+
+    public async Task InicializarDatosAsync()
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+            string query = @"INSERT INTO Transaccion (IdUsuario, IdCategoria, Cantidad, TipoMovimiento, Descripcion) VALUES
+                            (3, 1, 50.75, 'G', 'Compra en supermercado'), (3, 2, 20.00, 'G', 'Billete de autobús'), (4, 3, 100.00, 'I', 'Venta de un objeto personal');";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
                 await command.ExecuteNonQueryAsync();
             }
         }

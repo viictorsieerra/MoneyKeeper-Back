@@ -64,5 +64,9 @@ public class CuentaService : ICuentaService
 
     }
 
+    public async Task InicializarDatosAsync()
+    {
+        await _repository.InicializarDatosAsync();
+    }
 
 }

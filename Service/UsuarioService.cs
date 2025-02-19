@@ -67,5 +67,10 @@ class UsuarioService : IUsuarioService
 
     }
 
+    public async Task InicializarDatosAsync()
+    {
+        await _repository.InicializarDatosAsync();
+    }
+
 
 }

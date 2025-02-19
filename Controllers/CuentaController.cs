@@ -21,7 +21,7 @@ public class CuentaController : ControllerBase
         List<Cuenta> cuentas = await _service.GetAllAsync();
         return Ok(cuentas);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<ActionResult<Cuenta>> GetCuenta(int id)
     {
@@ -58,6 +58,13 @@ public class CuentaController : ControllerBase
     {
         await _service.DeleteAsync(idCuenta);
         return NoContent();
+    }
+
+    [HttpPost("InicializarDatos")]
+    public async Task<IActionResult> InicializarDatos()
+    {
+        await _service.InicializarDatosAsync();
+        return Ok();
     }
 
 }

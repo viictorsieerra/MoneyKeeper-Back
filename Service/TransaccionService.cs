@@ -67,5 +67,10 @@ class TransaccionService : ITransaccionService
 
     }
 
+    public async Task InicializarDatosAsync()
+    {
+        await _repository.InicializarDatosAsync();
+    }
+
 
 }

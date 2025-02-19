@@ -62,5 +62,10 @@ class CategoriaService : ICategoriaService
 
     }
 
+    public async Task InicializarDatosAsync()
+    {
+        await _repository.InicializarDatosAsync();
+    }
+
 
 }

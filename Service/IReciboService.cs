@@ -10,4 +10,5 @@ public interface IReciboService
     Task <Recibo>AddAsync(Recibo bebida);
     Task <Recibo>UpdateAsync(Recibo bebida);
     Task DeleteAsync(int id);
+    public Task InicializarDatosAsync();
 }

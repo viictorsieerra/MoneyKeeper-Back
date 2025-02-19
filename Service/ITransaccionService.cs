@@ -10,4 +10,5 @@ public interface ITransaccionService
     Task <Transaccion>AddAsync(Transaccion bebida);
     Task <Transaccion>UpdateAsync(Transaccion bebida);
     Task DeleteAsync(int id);
+    Task InicializarDatosAsync();
 }

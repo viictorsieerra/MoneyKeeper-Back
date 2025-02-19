@@ -10,4 +10,5 @@ public interface IUsuarioService
     Task <Usuario>AddAsync(Usuario bebida);
     Task <Usuario>UpdateAsync(Usuario bebida);
     Task DeleteAsync(int id);
+    Task InicializarDatosAsync();
 }
