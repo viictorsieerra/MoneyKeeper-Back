@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
 namespace Controllers;
 
+[Authorize (Roles = "Cliente")]
 [ApiController]
 [Route("[controller]")]
 public class TransaccionController : ControllerBase
@@ -30,6 +32,19 @@ public class TransaccionController : ControllerBase
             return NotFound();
         }
         return Ok(transaccion);
+    }
+
+    [HttpGet("transacciones")]
+    public async Task<IActionResult> GetMisTransacciones()
+    {
+        var transacciones = await _service.GetByUser(User);
+
+        if (transacciones == null || transacciones.Count == 0)
+        {
+            return NotFound("No se encontraron transacciones para este usuario.");
+        }
+
+        return Ok(transacciones);
     }
 
     [HttpPost]

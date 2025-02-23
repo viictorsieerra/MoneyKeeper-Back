@@ -1,6 +1,7 @@
 using Models;
 using Microsoft.Data.SqlClient;
 using Repositories;
+using System.Security.Claims;
 namespace Services;
 
 class TransaccionService : ITransaccionService
@@ -28,6 +29,21 @@ class TransaccionService : ITransaccionService
         return transaccion;
     }
 
+    public async Task<List<Transaccion>> GetByUser(ClaimsPrincipal user)
+    {
+
+        var emailClaim = user.Claims.FirstOrDefault(c => c.Type ==ClaimTypes.Email);
+
+        if (emailClaim == null)
+        {
+            return new List<Transaccion>();
+        }
+
+        string correo = emailClaim.Value;
+
+        List<Transaccion> transacciones = await _repository.GetByUser(correo);
+        return transacciones;
+    }
 
     public async Task<Transaccion> AddAsync(Transaccion transaccion)
     {

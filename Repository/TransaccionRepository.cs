@@ -83,6 +83,44 @@ class TransaccionRepository : ITransaccionRepository
         return transaccion;
     }
 
+    public async Task<List<Transaccion>> GetByUser(string correoUsuario)
+    {
+        List<Transaccion> transacciones = new List<Transaccion>();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+
+            string query = "SELECT idTransaccion, tr.idUsuario, idCategoria, Cantidad, Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion tr\n"
+                + "INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario WHERE us.correo = @Correo";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@Correo", correoUsuario);
+
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        Transaccion transaccion = new Transaccion
+                        {
+                            _idTransaccion = reader.GetInt32(0),
+                            _idUsuario = reader.GetInt32(1),
+                            _idCategoria = reader.GetInt32(2),
+                            _cantidad = reader.GetDecimal(3),
+                            _descripcionTransaccion = reader.GetString(4),
+                            _fecTransaccion = reader.GetDateTime(5),
+                            _tipoMovimiento = reader.GetString(6).Trim()[0],
+                        };
+
+                        transacciones.Add(transaccion);
+                    }
+                }
+            }
+        }
+        return transacciones;
+    }
+
     public async Task AddAsync(Transaccion transaccion)
     {
         using (SqlConnection connection = new SqlConnection(_connectionString))

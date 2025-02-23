@@ -1,5 +1,6 @@
 using Models;
 using Microsoft.Data.SqlClient;
+using DTO;
 
 namespace Repositories;
 
@@ -89,7 +90,7 @@ class UsuarioRepository : IUsuarioRepository
         {
             await connection.OpenAsync();
 
-            string query = "INSERT INTO Usuario (Nombre, Apellido, Correo, Contrasena DNI, FecNacimiento) VALUES (@Nombre, @Apellido, @Correo, @Contrasena @DNI, @FecNacimiento)";
+            string query = "INSERT INTO Usuario (Nombre, Apellido, Correo, Contrasena, DNI, FecNacimiento) VALUES (@Nombre, @Apellido, @Correo, @Contrasena @DNI, @FecNacimiento)";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Nombre", usuario._nombre);
@@ -158,5 +159,77 @@ class UsuarioRepository : IUsuarioRepository
                 await command.ExecuteNonQueryAsync();
             }
         }
+    }
+
+    public async Task<UsuarioDTOOut> GetUserFromCredentials(LoginDTO loginDTO)
+    {
+
+        UsuarioDTOOut loginUser = null;
+        string contrasena = null;
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+
+            string query = @"SELECT idUsuario, Correo, Contrasena FROM Usuario Where Correo = @Correo";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+
+                command.Parameters.AddWithValue("@Correo", loginDTO._correo);
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        loginUser = new UsuarioDTOOut
+                        {
+                            _idUsuario = reader.GetInt32(0),
+                            _correo = reader.GetString(1),
+                        };
+                        contrasena = reader.GetString(2);
+                    }
+                }
+                if (loginDTO._contrasena != contrasena)
+                {
+                    throw new Exception("Contraseña o correo incorrecto");
+                }
+                else
+                {
+
+                    return loginUser;
+                }
+            }
+        }
+    }
+
+    public async Task<UsuarioDTOOut> RegisterUser(Usuario usuario)
+    {
+        UsuarioDTOOut userRegistered = new UsuarioDTOOut();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+
+            string query = "INSERT INTO Usuario (Nombre, Apellido, Correo, Contrasena, DNI, FecNacimiento) VALUES (@Nombre, @Apellido, @Correo, @Contrasena, @DNI, @FecNacimiento); SELECT SCOPE_IDENTITY();";
+
+            using (SqlTransaction transactionRegistro = connection.BeginTransaction())
+            {
+                using (var command = new SqlCommand(query, connection, transactionRegistro))
+                {
+                    command.Parameters.AddWithValue("@Nombre", usuario._nombre);
+                    command.Parameters.AddWithValue("@Apellido", usuario._apellido);
+                    command.Parameters.AddWithValue("@Correo", usuario._correo);
+                    command.Parameters.AddWithValue("@Contrasena", usuario._contrasena);
+                    command.Parameters.AddWithValue("@dni", usuario._dni);
+                    command.Parameters.AddWithValue("@FecNacimiento", usuario._fecNacimiento);
+
+                    userRegistered._idUsuario = Convert.ToInt32((decimal)await command.ExecuteScalarAsync());
+                    userRegistered._correo = usuario._correo;
+                }
+
+                transactionRegistro.Commit();
+            }
+        }
+        return userRegistered;
     }
 }
