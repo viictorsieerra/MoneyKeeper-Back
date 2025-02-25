@@ -1,3 +1,4 @@
+using DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -35,7 +36,7 @@ public class TransaccionController : ControllerBase
     }
 
     [HttpGet("transacciones")]
-    public async Task<IActionResult> GetMisTransacciones()
+    public async Task<ActionResult<List<TransaccionDTO>>> GetMisTransacciones()
     {
         var transacciones = await _service.GetByUser(User);
 

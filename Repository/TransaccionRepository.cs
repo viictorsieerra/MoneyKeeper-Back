@@ -1,5 +1,6 @@
 using Models;
 using Microsoft.Data.SqlClient;
+using DTO;
 
 namespace Repositories;
 
@@ -83,34 +84,33 @@ class TransaccionRepository : ITransaccionRepository
         return transaccion;
     }
 
-    public async Task<List<Transaccion>> GetByUser(string correoUsuario)
+    public async Task<List<TransaccionDTO>> GetByUser(string idUsuario)
     {
-        List<Transaccion> transacciones = new List<Transaccion>();
+        List<TransaccionDTO> transacciones = new List<TransaccionDTO>();
 
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idTransaccion, tr.idUsuario, idCategoria, Cantidad, Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion tr\n"
-                + "INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario WHERE us.correo = @Correo";
+            string query = "SELECT ca.Nombre, Cantidad, tr.Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion tr\n"
+                + "INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario\n"+
+                "INNER JOIN Categoria ca ON tr.idCategoria = ca.idCategoria WHERE us.idUsuario = @id";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@Correo", correoUsuario);
+                command.Parameters.AddWithValue("@id", idUsuario);
 
                 using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
                     {
-                        Transaccion transaccion = new Transaccion
+                        TransaccionDTO transaccion = new TransaccionDTO
                         {
-                            _idTransaccion = reader.GetInt32(0),
-                            _idUsuario = reader.GetInt32(1),
-                            _idCategoria = reader.GetInt32(2),
-                            _cantidad = reader.GetDecimal(3),
-                            _descripcionTransaccion = reader.GetString(4),
-                            _fecTransaccion = reader.GetDateTime(5),
-                            _tipoMovimiento = reader.GetString(6).Trim()[0],
+                            _nombreCategoria = reader.GetString(0),
+                            _cantidad = reader.GetDecimal(1),
+                            _descripcionTransaccion = reader.GetString(2),
+                            _fecTransaccion = reader.GetDateTime(3),
+                            _tipoMovimiento = reader.GetString(4).Trim()[0],
                         };
 
                         transacciones.Add(transaccion);
