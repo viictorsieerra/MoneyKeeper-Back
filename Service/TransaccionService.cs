@@ -65,6 +65,7 @@ class TransaccionService : ITransaccionService
         // Actualizar cuenta
         existingTransaccion._idUsuario = updatedTransaccion._idUsuario;
         existingTransaccion._idCategoria = updatedTransaccion._idCategoria;
+         existingTransaccion._idCuenta = updatedTransaccion._idCuenta;
         existingTransaccion._cantidad = updatedTransaccion._cantidad;
         existingTransaccion._descripcionTransaccion = updatedTransaccion._descripcionTransaccion;
         existingTransaccion._fecTransaccion = updatedTransaccion._fecTransaccion;

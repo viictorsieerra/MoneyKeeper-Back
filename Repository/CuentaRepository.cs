@@ -1,5 +1,6 @@
 using Models;
 using Microsoft.Data.SqlClient;
+using DTO;
 
 namespace Repositories;
 
@@ -20,7 +21,7 @@ public class CuentaRepository : ICuentaRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idCuenta, idUsuario, Dinero, Activo, FecCreacion FROM Cuenta";
+            string query = "SELECT idCuenta, idUsuario, Dinero, Activo, FecCreacion, Nombre FROM Cuenta";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -34,7 +35,8 @@ public class CuentaRepository : ICuentaRepository
                             _idUsuario = reader.GetInt32(1),
                             _dineroCuenta = reader.GetDecimal(2),
                             _activa = reader.GetBoolean(3),
-                            _fechaCreacion = reader.GetDateTime(4)
+                            _fechaCreacion = reader.GetDateTime(4),
+                            _nombreCuenta = reader.GetString(5)
                         };
 
                         cuentas.Add(cuenta);
@@ -53,7 +55,7 @@ public class CuentaRepository : ICuentaRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idCuenta, idUsuario, Dinero, Activo, FecCreacion FROM Cuentas WHERE idCuenta = @idCuenta";
+            string query = "SELECT idCuenta, idUsuario, Dinero, Activo, FecCreacion, Nombre FROM Cuentas WHERE idCuenta = @idCuenta";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -69,7 +71,8 @@ public class CuentaRepository : ICuentaRepository
                             _idUsuario = reader.GetInt32(1),
                             _dineroCuenta = reader.GetDecimal(2),
                             _activa = reader.GetBoolean(3),
-                            _fechaCreacion = reader.GetDateTime(4)
+                            _fechaCreacion = reader.GetDateTime(4),
+                            _nombreCuenta = reader.GetString(5)
                         };
                     }
                 }
@@ -86,13 +89,14 @@ public class CuentaRepository : ICuentaRepository
         {
             await connection.OpenAsync();
 
-            string query = "INSERT INTO Cuentas (idUsuario, Dinero, Activo, FecCreacion) VALUES (@idUsuario, @Dinero, @Activo, @FecCreacion)";
+            string query = "INSERT INTO Cuentas (idUsuario, Dinero, Activo, FecCreacion, Nombre) VALUES (@idUsuario, @Dinero, @Activo, @FecCreacion, @Nombre)";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@idUsuario", cuenta._idUsuario);
                 command.Parameters.AddWithValue("@Dinero", cuenta._dineroCuenta);
                 command.Parameters.AddWithValue("@Activo", cuenta._activa);
                 command.Parameters.AddWithValue("@FechaCreacion", cuenta._fechaCreacion);
+                command.Parameters.AddWithValue("@Nombre",cuenta._nombreCuenta );
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -105,7 +109,7 @@ public class CuentaRepository : ICuentaRepository
         {
             await connection.OpenAsync();
 
-            string query = "UPDATE Cuentas SET idUsuario = @idUsuario , Dinero = @Dinero, Activo = @Activo, FecCreacion = @FecCreacion WHERE idCuenta = @idCuenta";
+            string query = "UPDATE Cuentas SET idUsuario = @idUsuario , Dinero = @Dinero, Activo = @Activo, FecCreacion = @FecCreacion, Nombre = @Nombre WHERE idCuenta = @idCuenta";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@idCuenta", cuenta._idCuenta);
@@ -113,6 +117,7 @@ public class CuentaRepository : ICuentaRepository
                 command.Parameters.AddWithValue("@Dinero", cuenta._dineroCuenta);
                 command.Parameters.AddWithValue("@Activo", cuenta._activa);
                 command.Parameters.AddWithValue("@FechaCreacion", cuenta._fechaCreacion);
+                command.Parameters.AddWithValue("@Nombre",cuenta._nombreCuenta );
 
                 await command.ExecuteNonQueryAsync();
             }
@@ -150,6 +155,52 @@ public class CuentaRepository : ICuentaRepository
             }
         }
     }
+public async Task<List<CuentaDTO>> GetByUser(string idUsuario)
+    {
+        List<CuentaDTO> cuentas = new List<CuentaDTO>();
 
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+
+             string query = @"
+            SELECT 
+                ca.idCategoria AS _idCuenta,          
+                us.idUsuario AS _idUsuario,            
+                tr.Cantidad AS _dineroCuenta,          
+                tr.TipoMovimiento AS _activa,          
+                tr.FecTransaccion AS _fechaCreacion,   
+                ca.Nombre AS _nombreCuenta             
+            FROM Transaccion tr
+            INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario
+            INNER JOIN Categoria ca ON tr.idCategoria = ca.idCategoria
+            WHERE us.idUsuario = @id
+        ";
+ 
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id", idUsuario);
+
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        CuentaDTO transaccion = new CuentaDTO
+                        {
+                          _idCuenta = reader.GetInt32(0),
+                            _idUsuario = reader.GetInt32(1),
+                            _dineroCuenta = reader.GetDecimal(2),
+                            _activa = reader.GetBoolean(3),
+                            _fechaCreacion = reader.GetDateTime(4),
+                            _nombreCuenta = reader.GetString(5)
+                        };
+
+                        cuentas.Add(transaccion);
+                    }
+                }
+            }
+        }
+        return cuentas;
+    }
 
 }

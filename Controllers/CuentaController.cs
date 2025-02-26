@@ -1,3 +1,4 @@
+using DTO;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
@@ -66,5 +67,16 @@ public class CuentaController : ControllerBase
         await _service.InicializarDatosAsync();
         return Ok();
     }
+ [HttpGet("cuentas")]
+    public async Task<ActionResult<List<CuentaDTO>>> GetMisCuentas()
+    {
+        var cuentas = await _service.GetByUser(User);
 
+        if (cuentas == null || cuentas.Count == 0)
+        {
+            return NotFound("No se encontraron cuentas para este usuario.");
+        }
+
+        return Ok(cuentas);
+    }
 }

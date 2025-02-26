@@ -1,6 +1,8 @@
 using Models;
 using Microsoft.Data.SqlClient;
 using Repositories;
+using System.Security.Claims;
+using DTO;
 namespace Services;
 
 public class CuentaService : ICuentaService
@@ -50,6 +52,7 @@ public class CuentaService : ICuentaService
         existingCuenta._dineroCuenta = updatedCuenta._dineroCuenta;
         existingCuenta._activa = updatedCuenta._activa;
         existingCuenta._fechaCreacion = updatedCuenta._fechaCreacion;
+        existingCuenta._nombreCuenta = updatedCuenta._nombreCuenta;
         
 
         await _repository.UpdateAsync(existingCuenta);
@@ -67,6 +70,23 @@ public class CuentaService : ICuentaService
     public async Task InicializarDatosAsync()
     {
         await _repository.InicializarDatosAsync();
+    }
+
+
+    public async Task<List<CuentaDTO>> GetByUser(ClaimsPrincipal user)
+    {
+
+        var idClaim = user.Claims.FirstOrDefault(c => c.Type ==ClaimTypes.NameIdentifier);
+
+        if (idClaim == null)
+        {
+            return new List<CuentaDTO>();
+        }
+
+        string idUsuario = idClaim.Value;
+
+        List<CuentaDTO> cuentas = await _repository.GetByUser(idUsuario);
+        return cuentas;
     }
 
 }
