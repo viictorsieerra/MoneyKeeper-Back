@@ -1,3 +1,4 @@
+using DTO;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
@@ -64,6 +65,20 @@ public class ReciboController : ControllerBase
     {
         await _service.InicializarDatosAsync();
         return Ok();
+    }
+
+
+     [HttpGet("recibos")]
+    public async Task<ActionResult<List<ReciboDTO>>> GetMisRecibos()
+    {
+        var recibos = await _service.GetByUser(User);
+
+        if (recibos == null || recibos.Count == 0)
+        {
+            return NotFound("No se encontraron recibos para este usuario.");
+        }
+
+        return Ok(recibos);
     }
 
 }
