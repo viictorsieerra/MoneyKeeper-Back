@@ -163,19 +163,8 @@ public async Task<List<CuentaDTO>> GetByUser(string idUsuario)
         {
             await connection.OpenAsync();
 
-             string query = @"
-            SELECT 
-                ca.idCategoria AS _idCuenta,          
-                us.idUsuario AS _idUsuario,            
-                tr.Cantidad AS _dineroCuenta,          
-                tr.TipoMovimiento AS _activa,          
-                tr.FecTransaccion AS _fechaCreacion,   
-                ca.Nombre AS _nombreCuenta             
-            FROM Transaccion tr
-            INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario
-            INNER JOIN Categoria ca ON tr.idCategoria = ca.idCategoria
-            WHERE us.idUsuario = @id
-        ";
+             string query = "SELECT CU.dinero, CU.activo, CU.fecCreacion, CU.nombre FROM Cuenta CU\n" + 
+                            "INNER JOIN Usuario us ON CU.idUsuario = US.idUsuario\n";
  
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -187,12 +176,11 @@ public async Task<List<CuentaDTO>> GetByUser(string idUsuario)
                     {
                         CuentaDTO transaccion = new CuentaDTO
                         {
-                          _idCuenta = reader.GetInt32(0),
-                            _idUsuario = reader.GetInt32(1),
-                            _dineroCuenta = reader.GetDecimal(2),
-                            _activa = reader.GetBoolean(3),
-                            _fechaCreacion = reader.GetDateTime(4),
-                            _nombreCuenta = reader.GetString(5)
+                         
+                            _dineroCuenta = reader.GetDecimal(0),
+                            _activa = reader.GetBoolean(1),
+                            _fechaCreacion = reader.GetDateTime(2),
+                            _nombreCuenta = reader.GetString(3)
                         };
 
                         cuentas.Add(transaccion);
