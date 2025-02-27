@@ -1,5 +1,6 @@
 using Models;
 using Microsoft.Data.SqlClient;
+using DTO;
 
 namespace Repositories;
 
@@ -151,4 +152,40 @@ class ReciboRepository : IReciboRepository
             }
         }
     }
+
+    public async Task<List<ReciboDTO>> GetByUser(string idUsuario)
+    {
+        List<ReciboDTO> recibos = new List<ReciboDTO>();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+
+            string query = "SELECT ca.Nombre, Cantidad, tr.Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion tr\n"
+                + "INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario\n"+
+                "INNER JOIN Categoria ca ON tr.idCategoria = ca.idCategoria WHERE us.idUsuario = @id";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id", idUsuario);
+
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        ReciboDTO recibo = new ReciboDTO
+                        {
+                            _dineroRecibo = reader.GetDecimal(0),
+                            _activa = reader.GetBoolean(1),
+                            _fecRecibo = reader.GetDateTime(2)
+                        };
+
+                        recibos.Add(recibo);
+                    }
+                }
+            }
+        }
+        return recibos;
+    }
+
 }

@@ -1,6 +1,8 @@
 using Models;
 using Microsoft.Data.SqlClient;
 using Repositories;
+using DTO;
+using System.Security.Claims;
 namespace Services;
 
 public class MetaAhorroService : IMetaAhorroService
@@ -73,4 +75,21 @@ public class MetaAhorroService : IMetaAhorroService
         await _repository.InicializarDatosAsync();
     }
 
+    public async Task<List<MetaAhorroDTO>> GetByUser(ClaimsPrincipal user)
+    {
+
+        var idClaim = user.Claims.FirstOrDefault(c => c.Type ==ClaimTypes.NameIdentifier);
+
+        if (idClaim == null)
+        {
+            return new List<MetaAhorroDTO>();
+        }
+
+        string idUsuario = idClaim.Value;
+
+        List<MetaAhorroDTO> metas = await _repository.GetByUser(idUsuario);
+        return metas;
+    }
+
+    
 }

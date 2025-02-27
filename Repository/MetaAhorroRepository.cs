@@ -1,5 +1,6 @@
 using Models;
 using Microsoft.Data.SqlClient;
+using DTO;
 
 namespace Repositories;
 
@@ -166,4 +167,46 @@ class MetaAhorroRepository : IMetaAhorroRepository
             }
         }
     }
+
+
+    public async Task<List<MetaAhorroDTO>> GetByUser(string idUsuario)
+    {
+        List<MetaAhorroDTO> metas = new List<MetaAhorroDTO>();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+
+             string query = "SELECT ME.Nombre, ME.Descripcion, ME.DineroObjetivo, ME.DineroActual, ME.Activo, ME.FecCreacion, ME.FecObjetivo FROM MetaAhorro ME\n" +
+            "INNER JOIN Usuario us ON ME.idUsuario = US.idUsuario\n";
+ 
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id", idUsuario);
+
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        MetaAhorroDTO meta = new MetaAhorroDTO
+                        {
+                         
+                            _nombreMeta = reader.GetString(0),
+                            _descripcionMeta = reader.GetString(1),
+                            _dineroObjetivo = reader.GetDecimal(2),
+                            _dineroActual = reader.GetDecimal(3),
+                            _activoMeta = reader.GetBoolean(4),
+                            _fechaCreacionMeta = reader.GetDateTime(5),
+                            _fechaObjetivoMeta = reader.GetDateTime(6)
+                        };
+
+                        metas.Add(meta);
+                    }
+                }
+            }
+        }
+        return metas;
+    }
+
+
 }

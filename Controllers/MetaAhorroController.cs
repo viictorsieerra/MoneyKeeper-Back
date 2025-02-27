@@ -1,3 +1,4 @@
+using DTO;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
@@ -66,5 +67,19 @@ public class MetaAhorroController : ControllerBase
         await _service.InicializarDatosAsync();
         return Ok();
     }
+
+    [HttpGet("metas")]
+    public async Task<ActionResult<List<MetaAhorroDTO>>> GetMisMetas()
+    {
+        var metas = await _service.GetByUser(User);
+
+        if (metas == null || metas.Count == 0)
+        {
+            return NotFound("No se encontraron metas para este usuario.");
+        }
+
+        return Ok(metas);
+    }
+
 
 }

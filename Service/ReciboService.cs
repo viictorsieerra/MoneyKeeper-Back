@@ -1,6 +1,8 @@
 using Models;
 using Microsoft.Data.SqlClient;
 using Repositories;
+using DTO;
+using System.Security.Claims;
 namespace Services;
 
 class ReciboService : IReciboService
@@ -70,5 +72,21 @@ class ReciboService : IReciboService
     {
         await _repository.InicializarDatosAsync();
     }
+public async Task<List<ReciboDTO>> GetByUser(ClaimsPrincipal user)
+    {
 
+        var idClaim = user.Claims.FirstOrDefault(c => c.Type ==ClaimTypes.NameIdentifier);
+
+        if (idClaim == null)
+        {
+            return new List<ReciboDTO>();
+        }
+
+        string idUsuario = idClaim.Value;
+
+        List<ReciboDTO> recibos = await _repository.GetByUser(idUsuario);
+        return recibos;
+    }
+
+    
 }
