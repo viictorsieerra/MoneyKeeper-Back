@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
 namespace Controllers;
 
+[Authorize (Roles = "Cliente")]
 [ApiController]
 [Route("[controller]")]
 public class CategoriaController : ControllerBase
