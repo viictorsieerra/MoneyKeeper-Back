@@ -1,10 +1,11 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
 namespace Controllers;
 
-[Authorize (Roles = "Cliente")]
+[Authorize(Roles = "Cliente")]
 [ApiController]
 [Route("[controller]")]
 public class UsuarioController : ControllerBase
@@ -27,6 +28,16 @@ public class UsuarioController : ControllerBase
     public async Task<ActionResult<Usuario>> GetUsuario(int id)
     {
         Usuario usuario = await _service.GetByIdAsync(id);
+        if (usuario == null)
+        {
+            return NotFound();
+        }
+        return Ok(usuario);
+    }
+    [HttpGet("Auth")]
+    public async Task<ActionResult<Usuario>> GetUsuarioAuth()
+    {
+        Usuario usuario = await _service.GetByToken(User);
         if (usuario == null)
         {
             return NotFound();
@@ -62,7 +73,8 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPost("InicializarDatos")]
-    public async Task<IActionResult> InicializarDatos(){
+    public async Task<IActionResult> InicializarDatos()
+    {
         await _service.InicializarDatosAsync();
         return Ok();
     }
