@@ -53,9 +53,10 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUsuario(int idUsuario, Usuario updatedUsuario)
+    public async Task<IActionResult> UpdateUsuario(int id, Usuario updatedUsuario)
     {
-        var existingUsuario = await _service.GetByIdAsync(idUsuario);
+        updatedUsuario._idUsuario = id;
+        var existingUsuario = await _service.GetByIdAsync(id);
         if (existingUsuario == null)
         {
             return NotFound();
