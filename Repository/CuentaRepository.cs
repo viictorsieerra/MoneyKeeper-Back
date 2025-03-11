@@ -103,13 +103,13 @@ public class CuentaRepository : ICuentaRepository
         }
     }
 
-    public async Task UpdateAsync(Cuenta cuenta)
+    public async Task UpdateCuenta(Cuenta cuenta)
     {
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             await connection.OpenAsync();
 
-            string query = "UPDATE Cuentas SET idUsuario = @idUsuario , Dinero = @Dinero, Activo = @Activo, FecCreacion = @FecCreacion, Nombre = @Nombre WHERE idCuenta = @idCuenta";
+            string query = "UPDATE Cuenta SET idUsuario = @idUsuario , Dinero = @Dinero, Activo = @Activo, FecCreacion = @FecCreacion, Nombre = @Nombre WHERE idCuenta = @idCuenta";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@idCuenta", cuenta._idCuenta);

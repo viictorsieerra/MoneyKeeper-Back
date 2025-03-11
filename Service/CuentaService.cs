@@ -38,7 +38,7 @@ public class CuentaService : ICuentaService
     }
 
 
-    public async Task<Cuenta> UpdateAsync(Cuenta updatedCuenta)
+    public async Task<Cuenta> UpdateCuenta(Cuenta updatedCuenta)
     {
         var existingCuenta = await _repository.GetByIdAsync(updatedCuenta._idCuenta);
 
@@ -55,7 +55,7 @@ public class CuentaService : ICuentaService
         existingCuenta._nombreCuenta = updatedCuenta._nombreCuenta;
         
 
-        await _repository.UpdateAsync(existingCuenta);
+        await _repository.UpdateCuenta(existingCuenta);
 
         return existingCuenta;
     }

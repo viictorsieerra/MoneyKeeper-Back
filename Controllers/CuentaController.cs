@@ -52,7 +52,7 @@ public class CuentaController : ControllerBase
             return NotFound();
         }
 
-        await _service.UpdateAsync(updatedCuenta);
+        await _service.UpdateCuenta(updatedCuenta);
         return NoContent();
     }
 
@@ -62,6 +62,7 @@ public class CuentaController : ControllerBase
         await _service.DeleteAsyncById(id);
         return NoContent();
     }
+
 
     [HttpPost("InicializarDatos")]
     public async Task<IActionResult> InicializarDatos()
