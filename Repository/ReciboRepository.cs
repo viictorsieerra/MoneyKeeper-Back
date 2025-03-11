@@ -161,9 +161,7 @@ class ReciboRepository : IReciboRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT ca.Nombre, Cantidad, tr.Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion tr\n"
-                + "INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario\n"+
-                "INNER JOIN Categoria ca ON tr.idCategoria = ca.idCategoria WHERE us.idUsuario = @id";
+            string query = "SELECT Dinero, Activo, FecRecibo FROM Recibos WHERE idRecibo = @id";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {

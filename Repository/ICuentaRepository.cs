@@ -9,6 +9,6 @@ public interface ICuentaRepository
     Task AddAsync(Cuenta cuenta);
      Task<List<CuentaDTO>> GetByUser(string id);
     Task UpdateAsync(Cuenta cuenta);
-    Task DeleteAsync(int id);
+    Task DeleteAsyncById(int id);
     Task InicializarDatosAsync();
 }

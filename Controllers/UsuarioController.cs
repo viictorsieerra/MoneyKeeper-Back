@@ -1,10 +1,11 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
 namespace Controllers;
 
-[Authorize (Roles = "Cliente")]
+[Authorize(Roles = "Cliente")]
 [ApiController]
 [Route("[controller]")]
 public class UsuarioController : ControllerBase
@@ -33,6 +34,16 @@ public class UsuarioController : ControllerBase
         }
         return Ok(usuario);
     }
+    [HttpGet("Auth")]
+    public async Task<ActionResult<Usuario>> GetUsuarioAuth()
+    {
+        Usuario usuario = await _service.GetByToken(User);
+        if (usuario == null)
+        {
+            return NotFound();
+        }
+        return Ok(usuario);
+    }
 
     [HttpPost]
     public async Task<ActionResult<Usuario>> CreateUsuario(Usuario usuario)
@@ -42,9 +53,10 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUsuario(int idUsuario, Usuario updatedUsuario)
+    public async Task<IActionResult> UpdateUsuario(int id, Usuario updatedUsuario)
     {
-        var existingUsuario = await _service.GetByIdAsync(idUsuario);
+        updatedUsuario._idUsuario = id;
+        var existingUsuario = await _service.GetByIdAsync(id);
         if (existingUsuario == null)
         {
             return NotFound();
@@ -62,7 +74,8 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPost("InicializarDatos")]
-    public async Task<IActionResult> InicializarDatos(){
+    public async Task<IActionResult> InicializarDatos()
+    {
         await _service.InicializarDatosAsync();
         return Ok();
     }

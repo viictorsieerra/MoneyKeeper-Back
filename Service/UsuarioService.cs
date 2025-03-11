@@ -1,6 +1,7 @@
 using Models;
 using Microsoft.Data.SqlClient;
 using Repositories;
+using System.Security.Claims;
 namespace Services;
 
 class UsuarioService : IUsuarioService
@@ -28,6 +29,26 @@ class UsuarioService : IUsuarioService
         return usuario;
     }
 
+    public async Task<Usuario> GetByToken(ClaimsPrincipal user)
+    {
+
+        var idClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+        if (idClaim == null)
+        {
+            return null;
+        }
+
+        int idUsuario;
+        if (!int.TryParse(idClaim.Value, out idUsuario))
+        {
+            throw new Exception("Fallo al cambiar la ID");
+        }
+
+        Usuario usuario = await _repository.GetByIdAsync(idUsuario);
+        return usuario;
+    }
+
 
     public async Task<Usuario> AddAsync(Usuario usuario)
     {
@@ -52,8 +73,8 @@ class UsuarioService : IUsuarioService
         existingUsuario._correo = updatedUsuario._correo;
         existingUsuario._contrasena = updatedUsuario._contrasena;
         existingUsuario._dni = updatedUsuario._dni;
-        
-        
+
+
 
         await _repository.UpdateAsync(existingUsuario);
 
