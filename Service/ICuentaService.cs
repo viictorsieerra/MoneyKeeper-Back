@@ -12,7 +12,7 @@ public interface ICuentaService
     Task <Cuenta>AddAsync(Cuenta cuenta);
     Task<List<CuentaDTO>> GetByUser(ClaimsPrincipal user);
     Task <Cuenta>UpdateAsync(Cuenta cuenta);
-    Task DeleteAsync(int id);
+    Task DeleteAsyncById(int idCuenta);
     Task InicializarDatosAsync();
     
 }

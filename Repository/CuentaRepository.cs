@@ -124,7 +124,7 @@ public class CuentaRepository : ICuentaRepository
         }
     }
 
-    public async Task DeleteAsync(int idCuenta)
+    public async Task DeleteAsyncById(int idCuenta)
     {
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {

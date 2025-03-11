@@ -59,7 +59,7 @@ public class CuentaController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCuenta(int idCuenta)
     {
-        await _service.DeleteAsync(idCuenta);
+        await _service.DeleteAsyncById(idCuenta);
         return NoContent();
     }
 
