@@ -5,7 +5,7 @@ using Models;
 using Services;
 namespace Controllers;
 
-[Authorize (Roles = "Cliente")]
+// [Authorize (Roles = "Cliente")]
 [ApiController]
 [Route("[controller]")]
 public class CuentaController : ControllerBase
@@ -57,9 +57,9 @@ public class CuentaController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCuenta(int idCuenta)
+    public async Task<IActionResult> DeleteCuenta(int id)
     {
-        await _service.DeleteAsyncById(idCuenta);
+        await _service.DeleteAsyncById(id);
         return NoContent();
     }
 

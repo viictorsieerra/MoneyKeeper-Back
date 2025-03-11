@@ -64,12 +64,6 @@ public class CuentaService : ICuentaService
     
     public async Task DeleteAsyncById(int idCuenta)
     {
-        var cuenta = await _repository.GetByIdAsync(idCuenta);
-        if (cuenta == null)
-        {
-            throw new Exception("No se ha encontrado la cuenta");
-        }
-
         await _repository.DeleteAsyncById(idCuenta);
     }
 

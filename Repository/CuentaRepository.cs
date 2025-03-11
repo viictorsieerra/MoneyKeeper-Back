@@ -126,11 +126,12 @@ public class CuentaRepository : ICuentaRepository
 
     public async Task DeleteAsyncById(int idCuenta)
     {
+
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             await connection.OpenAsync();
 
-            string query = "DELETE FROM Cuentas WHERE idCuenta = @idCuenta";
+            string query = "DELETE FROM Cuenta WHERE idCuenta = @idCuenta";
 
             using (var command = new SqlCommand(query, connection))
             {
@@ -139,6 +140,7 @@ public class CuentaRepository : ICuentaRepository
                 await command.ExecuteNonQueryAsync();
             }
         }
+        
     }
 
         public async Task InicializarDatosAsync()
@@ -163,7 +165,7 @@ public async Task<List<CuentaDTO>> GetByUser(string idUsuario)
         {
             await connection.OpenAsync();
 
-             string query = "SELECT CU.dinero, CU.activo, CU.fecCreacion, CU.nombre FROM Cuenta CU\n" + 
+             string query = "SELECT CU.idCuenta, CU.dinero, CU.activo, CU.fecCreacion, CU.nombre FROM Cuenta CU\n" + 
                             "INNER JOIN Usuario us ON CU.idUsuario = US.idUsuario\n";
  
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -176,11 +178,11 @@ public async Task<List<CuentaDTO>> GetByUser(string idUsuario)
                     {
                         CuentaDTO transaccion = new CuentaDTO
                         {
-                         
-                            _dineroCuenta = reader.GetDecimal(0),
-                            _activa = reader.GetBoolean(1),
-                            _fechaCreacion = reader.GetDateTime(2),
-                            _nombreCuenta = reader.GetString(3)
+                            _idCuenta = reader.GetInt32(0),
+                            _dineroCuenta = reader.GetDecimal(1),
+                            _activa = reader.GetBoolean(2),
+                            _fechaCreacion = reader.GetDateTime(3),
+                            _nombreCuenta = reader.GetString(4)
                         };
 
                         cuentas.Add(transaccion);
