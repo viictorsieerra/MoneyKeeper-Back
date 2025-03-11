@@ -178,7 +178,7 @@ class MetaAhorroRepository : IMetaAhorroRepository
             await connection.OpenAsync();
 
              string query = "SELECT ME.Nombre, ME.Descripcion, ME.DineroObjetivo, ME.DineroActual, ME.Activo, ME.FecCreacion, ME.FecObjetivo FROM MetaAhorro ME\n" +
-            "INNER JOIN Usuario us ON ME.idUsuario = US.idUsuario\n";
+            "INNER JOIN Usuario us ON ME.idUsuario = US.idUsuario\n WHERE Us.idUsuario = @id";
  
             using (SqlCommand command = new SqlCommand(query, connection))
             {
