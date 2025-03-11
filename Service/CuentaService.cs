@@ -31,35 +31,42 @@ public class CuentaService : ICuentaService
     }
 
 
-    public async Task<Cuenta> AddAsync(Cuenta cuenta)
+     public async Task<Cuenta> AddAsync(Cuenta cuenta)
     {
-        await _repository.AddAsync(cuenta);
+        // Aquí llamamos a CreateCuenta de la interfaz
+        await _repository.CreateCuenta(cuenta);
         return cuenta;
     }
 
 
+
     public async Task<Cuenta> UpdateCuenta(Cuenta updatedCuenta)
+{
+    try
     {
         var existingCuenta = await _repository.GetByIdAsync(updatedCuenta._idCuenta);
 
         if (existingCuenta == null)
         {
-            throw new Exception("NO SE HAN ENCONTRADO DATOS");
+            throw new Exception("No se ha encontrado la cuenta a actualizar");
         }
 
-        // Actualizar cuenta
+        // Actualizar la cuenta
         existingCuenta._idUsuario = updatedCuenta._idUsuario;
         existingCuenta._dineroCuenta = updatedCuenta._dineroCuenta;
         existingCuenta._activa = updatedCuenta._activa;
         existingCuenta._fechaCreacion = updatedCuenta._fechaCreacion;
         existingCuenta._nombreCuenta = updatedCuenta._nombreCuenta;
-        
 
         await _repository.UpdateCuenta(existingCuenta);
-
         return existingCuenta;
     }
-
+    catch (Exception ex)
+    {
+        // Aquí puedes registrar el error o lanzarlo de nuevo
+        throw new Exception("Error al actualizar la cuenta: " + ex.Message);
+    }
+}
 
     
     public async Task DeleteAsyncById(int idCuenta)
@@ -89,5 +96,20 @@ public class CuentaService : ICuentaService
         List<CuentaDTO> cuentas = await _repository.GetByUser(idUsuario);
         return cuentas;
     }
+
+    public async Task<Cuenta> CreateCuenta(Cuenta cuenta)
+{
+    
+    if (string.IsNullOrEmpty(cuenta._nombreCuenta))
+    {
+        throw new ArgumentException("El nombre de la cuenta es obligatorio.");
+    }
+
+   
+    await _repository.CreateCuenta(cuenta);
+
+    
+    return cuenta;
+}
 
 }
