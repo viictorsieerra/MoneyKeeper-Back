@@ -36,23 +36,26 @@ public class CuentaController : ControllerBase
         return Ok(cuenta);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<Cuenta>> CreateCuenta(Cuenta cuenta)
-    {
-        await _service.AddAsync(cuenta);
-        return CreatedAtAction(nameof(GetCuenta), new { id = cuenta._idCuenta }, cuenta);
-    }
+   [HttpPost]
+public async Task<ActionResult<Cuenta>> CreateCuenta(Cuenta cuenta)
+{
+    
+    var nuevaCuenta = await _service.CreateCuenta(cuenta);
+
+   
+    return CreatedAtAction(nameof(GetCuenta), new { id = nuevaCuenta._idCuenta }, nuevaCuenta);
+}
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCuenta(int idCuenta, Cuenta updatedCuenta)
+    public async Task<IActionResult> UpdateCuenta(int id, Cuenta updatedCuenta)
     {
-        var existingCuenta = await _service.GetByIdAsync(idCuenta);
+        var existingCuenta = await _service.GetByIdAsync(id);
         if (existingCuenta == null)
         {
             return NotFound();
         }
 
-        await _service.UpdateAsync(updatedCuenta);
+        await _service.UpdateCuenta(updatedCuenta);
         return NoContent();
     }
 
@@ -62,6 +65,7 @@ public class CuentaController : ControllerBase
         await _service.DeleteAsyncById(id);
         return NoContent();
     }
+
 
     [HttpPost("InicializarDatos")]
     public async Task<IActionResult> InicializarDatos()

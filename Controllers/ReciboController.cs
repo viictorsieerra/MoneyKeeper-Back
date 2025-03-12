@@ -36,14 +36,22 @@ public class ReciboController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Recibo>> CreateRecibo(Recibo recibo)
     {
-        await _service.AddAsync(recibo);
-        return CreatedAtAction(nameof(GetRecibo), new { id = recibo._idRecibo }, recibo);
+        try
+        {
+            await _service.AddAsync(recibo);
+            return CreatedAtAction(nameof(GetRecibo), new { id = recibo._idRecibo }, recibo);
+        }
+        catch (Exception ex)
+        {
+            // Devolver el error como JSON
+            return StatusCode(500, new { message = "Hubo un error al procesar la solicitud", details = ex.Message });
+        }
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateRecibo(int idRecibo, Recibo updatedRecibo)
+    public async Task<IActionResult> UpdateRecibo(int id, Recibo updatedRecibo)
     {
-        var existingRecibo = await _service.GetByIdAsync(idRecibo);
+        var existingRecibo = await _service.GetByIdAsync(id);
         if (existingRecibo == null)
         {
             return NotFound();
@@ -54,9 +62,9 @@ public class ReciboController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteRecibo(int idRecibo)
+    public async Task<IActionResult> DeleteRecibo(int id)
     {
-        await _service.DeleteAsync(idRecibo);
+        await _service.DeleteAsync(id);
         return NoContent();
     }
 

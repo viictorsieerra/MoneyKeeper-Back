@@ -11,7 +11,8 @@ public interface ICuentaService
     Task<Cuenta?> GetByIdAsync(int idCuenta);
     Task <Cuenta>AddAsync(Cuenta cuenta);
     Task<List<CuentaDTO>> GetByUser(ClaimsPrincipal user);
-    Task <Cuenta>UpdateAsync(Cuenta cuenta);
+    Task <Cuenta>UpdateCuenta(Cuenta cuenta);
+    Task<Cuenta>CreateCuenta(Cuenta cuenta);
     Task DeleteAsyncById(int idCuenta);
     Task InicializarDatosAsync();
     
