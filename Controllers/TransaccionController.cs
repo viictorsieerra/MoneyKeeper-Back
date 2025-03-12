@@ -5,7 +5,7 @@ using Models;
 using Services;
 namespace Controllers;
 
-// [Authorize (Roles = "Cliente")]
+[Authorize (Roles = "Cliente")]
 [ApiController]
 [Route("[controller]")]
 public class TransaccionController : ControllerBase
