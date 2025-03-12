@@ -31,11 +31,11 @@ public class MetaAhorroService : IMetaAhorroService
     }
 
 
-    public async Task<MetaAhorro> AddAsync(MetaAhorro meta)
-    {
-        await _repository.AddAsync(meta);
-        return meta;
-    }
+  public async Task<MetaAhorro> AddAsync(MetaAhorro meta)
+{
+    await _repository.AddAsync(meta);
+    return meta;
+}
 
 
     public async Task<MetaAhorro> UpdateAsync(MetaAhorro updatedMetaAhorro)
@@ -64,12 +64,10 @@ public class MetaAhorroService : IMetaAhorroService
     }
 
 
-    public async Task DeleteAsync(int id)
+   public async Task DeleteAsync(int idMeta)
     {
-        await _repository.DeleteAsync(id);
-
+        await _repository.DeleteAsync(idMeta);  
     }
-
     public async Task InicializarDatosAsync()
     {
         await _repository.InicializarDatosAsync();

@@ -113,7 +113,7 @@ public class CuentaRepository : ICuentaRepository
             }
         }
     }
-    return cuenta; // Devuelve la cuenta con el id asignado
+    return cuenta; 
 }
 
     public async Task UpdateCuenta(Cuenta cuenta)

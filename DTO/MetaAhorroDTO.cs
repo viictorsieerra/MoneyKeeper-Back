@@ -2,7 +2,8 @@ namespace DTO;
 
 public class MetaAhorroDTO
 {
-       public string _nombreMeta { get; set; }
+    public int _idMeta { get; set; }
+    public string _nombreMeta { get; set; }
     public string _descripcionMeta {get;set;}
     public decimal _dineroObjetivo {get;set;}
     public decimal _dineroActual {get;set;}
@@ -12,8 +13,9 @@ public class MetaAhorroDTO
 
     public MetaAhorroDTO() { }
 
-   public MetaAhorroDTO(string nombreMeta, string descripcionMeta, decimal dineroObjetivo, decimal dineroActual, bool activoMeta, DateTime fechaCreacionMeta, DateTime fechaObjetivoMeta)
+   public MetaAhorroDTO(int idMeta, string nombreMeta, string descripcionMeta, decimal dineroObjetivo, decimal dineroActual, bool activoMeta, DateTime fechaCreacionMeta, DateTime fechaObjetivoMeta)
     {
+        _idMeta = idMeta;
         _nombreMeta = nombreMeta;
         _descripcionMeta = descripcionMeta;
         _dineroObjetivo = dineroObjetivo;

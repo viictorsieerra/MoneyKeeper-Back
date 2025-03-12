@@ -36,8 +36,16 @@ public class ReciboController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Recibo>> CreateRecibo(Recibo recibo)
     {
-        await _service.AddAsync(recibo);
-        return CreatedAtAction(nameof(GetRecibo), new { id = recibo._idRecibo }, recibo);
+        try
+        {
+            await _service.AddAsync(recibo);
+            return CreatedAtAction(nameof(GetRecibo), new { id = recibo._idRecibo }, recibo);
+        }
+        catch (Exception ex)
+        {
+            // Devolver el error como JSON
+            return StatusCode(500, new { message = "Hubo un error al procesar la solicitud", details = ex.Message });
+        }
     }
 
     [HttpPut("{id}")]

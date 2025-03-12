@@ -31,12 +31,27 @@ class ReciboService : IReciboService
     }
 
 
-    public async Task<Recibo> AddAsync(Recibo recibo)
+      public async Task<Recibo> AddAsync(Recibo recibo)
     {
-        await _repository.AddAsync(recibo);
+       
+        await _repository.CreateRecibo(recibo);
         return recibo;
     }
 
+        public async Task<Recibo> CreateRecibo(Recibo recibo)
+{
+    
+    if (string.IsNullOrEmpty(recibo._nombreRecibo))
+    {
+        throw new ArgumentException("El nombre de la Recibo es obligatorio.");
+    }
+
+   
+    await _repository.CreateRecibo(recibo);
+
+    
+    return recibo;
+}
 
     public async Task<Recibo> UpdateAsync(Recibo updatedRecibo)
     {
@@ -47,7 +62,7 @@ class ReciboService : IReciboService
             throw new Exception("NO SE HAN ENCONTRADO DATOS");
         }
 
-        // Actualizar cuenta
+        existingRecibo._nombreRecibo = updatedRecibo._nombreRecibo;
         existingRecibo._idUsuario = updatedRecibo._idUsuario;
         existingRecibo._idCuenta = updatedRecibo._idCuenta;
         existingRecibo._dineroRecibo = updatedRecibo._dineroRecibo;

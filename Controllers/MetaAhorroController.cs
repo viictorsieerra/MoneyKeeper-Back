@@ -36,12 +36,12 @@ public class MetaAhorroController : ControllerBase
         return Ok(meta);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<MetaAhorro>> CreateMeta(MetaAhorro meta)
-    {
-        await _service.AddAsync(meta);
-        return CreatedAtAction(nameof(GetMeta), new { id = meta._idMeta }, meta);
-    }
+   [HttpPost]
+public async Task<ActionResult<MetaAhorro>> CreateMeta(MetaAhorro meta)
+{
+    await _service.AddAsync(meta);
+    return CreatedAtAction(nameof(GetMeta), new { id = meta._idMeta }, meta);
+}
 
     [HttpPut("{id}")]
     public async Task<ActionResult<MetaAhorro>> UpdateMeta(int idMeta, MetaAhorro updatedMetaAhorro)
@@ -56,19 +56,12 @@ public class MetaAhorroController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteMetaAhorro(int idMeta)
-    {
-        await _service.DeleteAsync(idMeta);
-        return NoContent();
-    }
-
-    [HttpPost("InicializarDatos")]
-    public async Task<IActionResult> InicializarDatos()
-    {
-        await _service.InicializarDatosAsync();
-        return Ok();
-    }
+[HttpDelete("{id}")]
+public async Task<IActionResult> DeleteMetaAhorro(int idMeta)
+{
+    await _service.DeleteAsync(idMeta);  
+    return NoContent();  
+}
 
     [HttpGet("metas")]
     public async Task<ActionResult<List<MetaAhorroDTO>>> GetMisMetas()

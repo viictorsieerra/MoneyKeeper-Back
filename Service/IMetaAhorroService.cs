@@ -9,9 +9,9 @@ public interface IMetaAhorroService
 {
     Task<List<MetaAhorro>> GetAllAsync();
     Task<MetaAhorro?> GetByIdAsync(int idMetaAhorro);
-    Task <MetaAhorro>AddAsync(MetaAhorro meta);
-    Task <MetaAhorro>UpdateAsync(MetaAhorro meta);
+    Task<MetaAhorro> AddAsync(MetaAhorro meta);
+    Task<MetaAhorro> UpdateAsync(MetaAhorro meta);
     Task<List<MetaAhorroDTO>> GetByUser(ClaimsPrincipal user);
-    Task DeleteAsync(int id);
+    Task DeleteAsync(int idMeta);  
     Task InicializarDatosAsync();
 }
