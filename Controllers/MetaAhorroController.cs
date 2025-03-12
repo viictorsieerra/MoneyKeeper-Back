@@ -5,7 +5,7 @@ using Models;
 using Services;
 namespace Controllers;
 
-[Authorize (Roles = "Cliente")]
+[Authorize(Roles = "Cliente")]
 [ApiController]
 [Route("[controller]")]
 public class MetaAhorroController : ControllerBase
@@ -36,12 +36,12 @@ public class MetaAhorroController : ControllerBase
         return Ok(meta);
     }
 
-   [HttpPost]
-public async Task<ActionResult<MetaAhorro>> CreateMeta(MetaAhorro meta)
-{
-    await _service.AddAsync(meta);
-    return CreatedAtAction(nameof(GetMeta), new { id = meta._idMeta }, meta);
-}
+    [HttpPost]
+    public async Task<ActionResult<MetaAhorro>> CreateMeta(MetaAhorro meta)
+    {
+        await _service.AddAsync(meta);
+        return CreatedAtAction(nameof(GetMeta), new { id = meta._idMeta }, meta);
+    }
 
     [HttpPut("{id}")]
     public async Task<ActionResult<MetaAhorro>> UpdateMeta(int idMeta, MetaAhorro updatedMetaAhorro)
@@ -56,12 +56,12 @@ public async Task<ActionResult<MetaAhorro>> CreateMeta(MetaAhorro meta)
         return NoContent();
     }
 
-[HttpDelete("{id}")]
-public async Task<IActionResult> DeleteMetaAhorro(int id)
-{
-    await _service.DeleteAsync(id);  
-    return NoContent();  
-}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteMetaAhorro(int id)
+    {
+        await _service.DeleteAsync(id);
+        return NoContent();
+    }
 
     [HttpGet("metas")]
     public async Task<ActionResult<List<MetaAhorroDTO>>> GetMisMetas()

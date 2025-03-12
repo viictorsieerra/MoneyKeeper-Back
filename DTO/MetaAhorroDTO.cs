@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class MetaAhorroDTO
 {
-     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int idMeta { get; set; }
     public string _nombreMeta { get; set; }
     public string _descripcionMeta {get;set;}

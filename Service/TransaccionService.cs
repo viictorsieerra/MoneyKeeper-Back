@@ -46,6 +46,22 @@ class TransaccionService : ITransaccionService
         return transacciones;
     }
 
+        public async Task<List<TransaccionDTO>> GetByUserFilter(ClaimsPrincipal user, string fechaInicio, string fechaFin)
+    {
+
+        var idClaim = user.Claims.FirstOrDefault(c => c.Type ==ClaimTypes.NameIdentifier);
+
+        if (idClaim == null)
+        {
+            return new List<TransaccionDTO>();
+        }
+
+        string idUsuario = idClaim.Value;
+
+        List<TransaccionDTO> transacciones = await _repository.GetByUserFilter(idUsuario, fechaInicio, fechaFin);
+        return transacciones;
+    }
+
     public async Task<Transaccion> AddAsync(Transaccion transaccion)
     {
         await _repository.AddAsync(transaccion);

@@ -5,7 +5,7 @@ using Models;
 using Services;
 namespace Controllers;
 
-[Authorize (Roles = "Cliente")]
+// [Authorize (Roles = "Cliente")]
 [ApiController]
 [Route("[controller]")]
 public class TransaccionController : ControllerBase
@@ -39,6 +39,18 @@ public class TransaccionController : ControllerBase
     public async Task<ActionResult<List<TransaccionDTO>>> GetMisTransacciones()
     {
         var transacciones = await _service.GetByUser(User);
+
+        if (transacciones == null || transacciones.Count == 0)
+        {
+            return NotFound("No se encontraron transacciones para este usuario.");
+        }
+
+        return Ok(transacciones);
+    }
+        [HttpGet("filtro")]
+    public async Task<ActionResult<List<TransaccionDTO>>> GetMisTransaccionesFiltradas(string fechaInicio, string fechaFin)
+    {
+        var transacciones = await _service.GetByUserFilter(User, fechaInicio, fechaFin);
 
         if (transacciones == null || transacciones.Count == 0)
         {

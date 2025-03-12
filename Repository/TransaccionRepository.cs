@@ -68,7 +68,7 @@ class TransaccionRepository : ITransaccionRepository
                     while (await reader.ReadAsync())
                     {
                         transaccion = new Transaccion
-                          {
+                        {
                             _idTransaccion = reader.GetInt32(0),
                             _idUsuario = reader.GetInt32(1),
                             _idCategoria = reader.GetInt32(2),
@@ -95,7 +95,7 @@ class TransaccionRepository : ITransaccionRepository
             await connection.OpenAsync();
 
             string query = "SELECT ca.Nombre, Cantidad, tr.Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion tr\n"
-                + "INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario\n"+
+                + "INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario\n" +
                 "INNER JOIN Categoria ca ON tr.idCategoria = ca.idCategoria WHERE us.idUsuario = @id";
 
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -123,6 +123,47 @@ class TransaccionRepository : ITransaccionRepository
         return transacciones;
     }
 
+    public async Task<List<TransaccionDTO>> GetByUserFilter(string idUsuario, string fechaInicio, string fechaFin)
+    {
+        List<TransaccionDTO> transacciones = new List<TransaccionDTO>();
+
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+
+            string query = "SELECT ca.Nombre, Cantidad, tr.Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion tr\n"
+                + "INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario\n" +
+                "INNER JOIN Categoria ca ON tr.idCategoria = ca.idCategoria WHERE us.idUsuario = @id\n"+
+                "AND FecTransaccion BETWEEN  @fechaInicio AND @fechaFin";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id", idUsuario);
+                command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                command.Parameters.AddWithValue("@fechaFin", fechaFin);
+
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        TransaccionDTO transaccion = new TransaccionDTO
+                        {
+                            _nombreCategoria = reader.GetString(0),
+                            _cantidad = reader.GetDecimal(1),
+                            _descripcionTransaccion = reader.GetString(2),
+                            _fecTransaccion = reader.GetDateTime(3),
+                            _tipoMovimiento = reader.GetString(4).Trim()[0],
+                        };
+
+                        transacciones.Add(transaccion);
+                    }
+                }
+            }
+        }
+        return transacciones;
+    }
+
+
     public async Task AddAsync(Transaccion transaccion)
     {
         using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -134,7 +175,7 @@ class TransaccionRepository : ITransaccionRepository
             {
                 command.Parameters.AddWithValue("@IidUsuario", transaccion._idUsuario);
                 command.Parameters.AddWithValue("@idCategoria", transaccion._idCategoria);
-                command.Parameters.AddWithValue("idCuenta",transaccion._idCuenta);
+                command.Parameters.AddWithValue("idCuenta", transaccion._idCuenta);
                 command.Parameters.AddWithValue("@Cantidad", transaccion._cantidad);
                 command.Parameters.AddWithValue("@Descripcion", transaccion._descripcionTransaccion);
                 command.Parameters.AddWithValue("@FecTransaccion", transaccion._fecTransaccion);
@@ -157,7 +198,7 @@ class TransaccionRepository : ITransaccionRepository
             {
                 command.Parameters.AddWithValue("@IidUsuario", transaccion._idUsuario);
                 command.Parameters.AddWithValue("@idCategoria", transaccion._idCategoria);
-                command.Parameters.AddWithValue("idCuenta",transaccion._idCuenta);
+                command.Parameters.AddWithValue("idCuenta", transaccion._idCuenta);
                 command.Parameters.AddWithValue("@Cantidad", transaccion._cantidad);
                 command.Parameters.AddWithValue("@Descripcion", transaccion._descripcionTransaccion);
                 command.Parameters.AddWithValue("@FecTransaccion", transaccion._fecTransaccion);
