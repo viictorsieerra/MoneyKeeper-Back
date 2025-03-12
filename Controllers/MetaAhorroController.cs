@@ -57,9 +57,9 @@ public async Task<ActionResult<MetaAhorro>> CreateMeta(MetaAhorro meta)
     }
 
 [HttpDelete("{id}")]
-public async Task<IActionResult> DeleteMetaAhorro(int idMeta)
+public async Task<IActionResult> DeleteMetaAhorro(int id)
 {
-    await _service.DeleteAsync(idMeta);  
+    await _service.DeleteAsync(id);  
     return NoContent();  
 }
 

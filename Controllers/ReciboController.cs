@@ -49,9 +49,9 @@ public class ReciboController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateRecibo(int idRecibo, Recibo updatedRecibo)
+    public async Task<IActionResult> UpdateRecibo(int id, Recibo updatedRecibo)
     {
-        var existingRecibo = await _service.GetByIdAsync(idRecibo);
+        var existingRecibo = await _service.GetByIdAsync(id);
         if (existingRecibo == null)
         {
             return NotFound();
@@ -62,9 +62,9 @@ public class ReciboController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteRecibo(int idRecibo)
+    public async Task<IActionResult> DeleteRecibo(int id)
     {
-        await _service.DeleteAsync(idRecibo);
+        await _service.DeleteAsync(id);
         return NoContent();
     }
 
