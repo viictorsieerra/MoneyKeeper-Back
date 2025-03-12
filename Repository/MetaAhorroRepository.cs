@@ -173,7 +173,7 @@ class MetaAhorroRepository : IMetaAhorroRepository
     }
 
 
-   public async Task<List<MetaAhorroDTO>> GetByUser(string idUsuario)
+  public async Task<List<MetaAhorroDTO>> GetByUser(string idUsuario)
 {
     List<MetaAhorroDTO> metas = new List<MetaAhorroDTO>();
 
@@ -181,13 +181,12 @@ class MetaAhorroRepository : IMetaAhorroRepository
     {
         await connection.OpenAsync();
 
-        string query = "SELECT ME.Nombre, ME.Descripcion, ME.DineroObjetivo, ME.DineroActual, ME.Activo, ME.FecCreacion, ME.FecObjetivo FROM MetaAhorro ME " +
-                       "INNER JOIN Usuario us ON ME.idUsuario = us.idUsuario " +
-                       "WHERE us.idUsuario = @idUsuario";  // Añadí el WHERE para filtrar por idUsuario
+        string query = "SELECT idMeta, Nombre, Descripcion, DineroObjetivo, DineroActual, Activo, FecCreacion, FecObjetivo " +
+                       "FROM MetaAhorro WHERE idUsuario = @idUsuario";
 
         using (SqlCommand command = new SqlCommand(query, connection))
         {
-            command.Parameters.AddWithValue("@idUsuario", idUsuario); // Añadí el parámetro
+            command.Parameters.AddWithValue("@idUsuario", idUsuario); // Asegúrate que userId es un número entero
 
             using (SqlDataReader reader = await command.ExecuteReaderAsync())
             {
@@ -195,23 +194,25 @@ class MetaAhorroRepository : IMetaAhorroRepository
                 {
                     MetaAhorroDTO meta = new MetaAhorroDTO
                     {
-                        _nombreMeta = reader.GetString(0),
-                        _descripcionMeta = reader.GetString(1),
-                        _dineroObjetivo = reader.GetDecimal(2),
-                        _dineroActual = reader.GetDecimal(3),
-                        _activoMeta = reader.GetBoolean(4),
-                        _fechaCreacionMeta = reader.GetDateTime(5),
-                        _fechaObjetivoMeta = reader.GetDateTime(6)
+                        idMeta = reader.GetInt32(0),
+                        _nombreMeta = reader.GetString(1),
+                        _descripcionMeta = reader.GetString(2),
+                        _dineroObjetivo = reader.GetDecimal(3),
+                        _dineroActual = reader.GetDecimal(4),
+                        _activoMeta = reader.GetBoolean(5),
+                        _fechaCreacionMeta = reader.GetDateTime(6),
+                        _fechaObjetivoMeta = reader.GetDateTime(7)
                     };
-
                     metas.Add(meta);
                 }
             }
         }
     }
+
     return metas;
 }
-
-
-
 }
+
+
+
+
