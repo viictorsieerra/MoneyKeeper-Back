@@ -165,7 +165,7 @@ class ReciboRepository : IReciboRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT Dinero, Activo, FecRecibo FROM Recibos WHERE idRecibo = @id";
+            string query = "SELECT Dinero, Activo, FecRecibo, NombreRecibo, idRecibo FROM Recibos WHERE idUsuario = @id";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -179,7 +179,9 @@ class ReciboRepository : IReciboRepository
                         {
                             _dineroRecibo = reader.GetDecimal(0),
                             _activa = reader.GetBoolean(1),
-                            _fecRecibo = reader.GetDateTime(2)
+                            _fecRecibo = reader.GetDateTime(2),
+                            _nombreRecibo = reader.GetString(3),
+                            _idRecibo = reader.GetInt32(4)
                         };
 
                         recibos.Add(recibo);
