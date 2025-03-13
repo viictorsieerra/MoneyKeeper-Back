@@ -44,9 +44,9 @@ public class MetaAhorroController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<MetaAhorro>> UpdateMeta(int idMeta, MetaAhorro updatedMetaAhorro)
+    public async Task<ActionResult<MetaAhorro>> UpdateMeta(int id, MetaAhorro updatedMetaAhorro)
     {
-        var existingMetaAhorro = await _service.GetByIdAsync(idMeta);
+        var existingMetaAhorro = await _service.GetByIdAsync(id);
         if (existingMetaAhorro == null)
         {
             return NotFound();
