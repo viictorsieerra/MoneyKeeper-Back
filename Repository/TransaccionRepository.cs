@@ -21,7 +21,7 @@ class TransaccionRepository : ITransaccionRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idTransaccion, idUsuario, idCategoria, idCuenta Cantidad, Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion";
+            string query = "SELECT idTransaccion, idUsuario, idCategoria, idCuenta, Cantidad, Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -94,7 +94,7 @@ class TransaccionRepository : ITransaccionRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT ca.Nombre, Cantidad, tr.Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion tr\n"
+            string query = "SELECT ca.Nombre, Cantidad, tr.Descripcion, FecTransaccion, TipoMovimiento, idTransaccion FROM Transaccion tr\n"
                 + "INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario\n" +
                 "INNER JOIN Categoria ca ON tr.idCategoria = ca.idCategoria WHERE us.idUsuario = @id";
 
@@ -113,6 +113,7 @@ class TransaccionRepository : ITransaccionRepository
                             _descripcionTransaccion = reader.GetString(2),
                             _fecTransaccion = reader.GetDateTime(3),
                             _tipoMovimiento = reader.GetString(4).Trim()[0],
+                            _idTransaccion = reader.GetInt32(5)
                         };
 
                         transacciones.Add(transaccion);
@@ -131,7 +132,7 @@ class TransaccionRepository : ITransaccionRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT ca.Nombre, Cantidad, tr.Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion tr\n"
+            string query = "SELECT ca.Nombre, Cantidad, tr.Descripcion, FecTransaccion, TipoMovimiento, idTransaccion FROM Transaccion tr\n"
                 + "INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario\n" +
                 "INNER JOIN Categoria ca ON tr.idCategoria = ca.idCategoria WHERE us.idUsuario = @id\n"+
                 "AND FecTransaccion BETWEEN  @fechaInicio AND @fechaFin";
@@ -153,6 +154,7 @@ class TransaccionRepository : ITransaccionRepository
                             _descripcionTransaccion = reader.GetString(2),
                             _fecTransaccion = reader.GetDateTime(3),
                             _tipoMovimiento = reader.GetString(4).Trim()[0],
+                            _idTransaccion = reader.GetInt32(5),
                         };
 
                         transacciones.Add(transaccion);

@@ -2,6 +2,7 @@ namespace DTO;
 
 public class TransaccionDTO
 {
+    public int _idTransaccion { get; set; }
     public string _nombreCategoria { get; set; }
     public decimal _cantidad { get; set; }
     public char _tipoMovimiento { get; set; }
@@ -10,8 +11,9 @@ public class TransaccionDTO
 
     public TransaccionDTO() { }
 
-    public TransaccionDTO(string nombreCategoria, char tipoMovimiento, decimal cantidad, string descripcionTransaccion, DateTime fecTransaccion)
+    public TransaccionDTO(int idTransaccion, string nombreCategoria, char tipoMovimiento, decimal cantidad, string descripcionTransaccion, DateTime fecTransaccion)
     {
+        _idTransaccion = idTransaccion;
         _nombreCategoria = nombreCategoria;
         _tipoMovimiento = tipoMovimiento;
         _cantidad = cantidad;

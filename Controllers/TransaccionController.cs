@@ -81,9 +81,9 @@ public class TransaccionController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteTransaccion(int idTransaccion)
+    public async Task<IActionResult> DeleteTransaccion(int id)
     {
-        await _service.DeleteAsync(idTransaccion);
+        await _service.DeleteAsync(id);
         return NoContent();
     }
 
