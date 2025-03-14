@@ -1,0 +1,6 @@
+@MoneyKeeper_Back_HostAddress = http://localhost:5104
+
+GET {{MoneyKeeper_Back_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
