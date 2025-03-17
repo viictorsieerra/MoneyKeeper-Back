@@ -57,7 +57,7 @@ class TransaccionRepository : ITransaccionRepository
         {
             await connection.OpenAsync();
 
-            string query = "SELECT idTransaccion, idUsuario, idCategoria, idCuenta Cantidad, Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion WHERE idTransaccion = @idTransaccion";
+            string query = "SELECT idTransaccion, idUsuario, idCategoria, idCuenta, Cantidad, Descripcion, FecTransaccion, TipoMovimiento FROM Transaccion WHERE idTransaccion = @idTransaccion";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -195,12 +195,12 @@ class TransaccionRepository : ITransaccionRepository
         {
             await connection.OpenAsync();
 
-            string query = "UPDATE Transaccion SET idUsuario = @IidUsuario, idCategoria = @idCategoria, idCuenta=@idCuenta, Cantidad = @Cantidad, Descripcion = @Descripcion, FecTransaccion = @FecTransaccion, TipoMovimiento = @TipoMovimiento  WHERE idTransaccion = @idTransaccion";
+            string query = "UPDATE Transaccion SET idUsuario = @IidUsuario, idCategoria = @idCategoria, Cantidad = @Cantidad, Descripcion = @Descripcion, FecTransaccion = @FecTransaccion, TipoMovimiento = @TipoMovimiento  WHERE idTransaccion = @idTransaccion";
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@IidUsuario", transaccion._idUsuario);
                 command.Parameters.AddWithValue("@idCategoria", transaccion._idCategoria);
-                command.Parameters.AddWithValue("idCuenta", transaccion._idCuenta);
+                // command.Parameters.AddWithValue("idCuenta", transaccion._idCuenta);
                 command.Parameters.AddWithValue("@Cantidad", transaccion._cantidad);
                 command.Parameters.AddWithValue("@Descripcion", transaccion._descripcionTransaccion);
                 command.Parameters.AddWithValue("@FecTransaccion", transaccion._fecTransaccion);

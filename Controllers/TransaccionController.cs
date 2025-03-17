@@ -68,9 +68,9 @@ public class TransaccionController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateTransaccion(int idTransaccion, Transaccion updatedTransaccion)
+    public async Task<IActionResult> UpdateTransaccion(int id, Transaccion updatedTransaccion)
     {
-        var existingTransaccion = await _service.GetByIdAsync(idTransaccion);
+        var existingTransaccion = await _service.GetByIdAsync(id);
         if (existingTransaccion == null)
         {
             return NotFound();
