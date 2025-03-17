@@ -93,8 +93,8 @@ class ReciboRepository : IReciboRepository
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@nombreRecibo", recibo._nombreRecibo);
-                command.Parameters.AddWithValue("@ID_Usuario", recibo._idUsuario);
-                command.Parameters.AddWithValue("@ID_Cuenta", recibo._idCuenta);
+                command.Parameters.AddWithValue("@idUsuario", recibo._idUsuario);
+                command.Parameters.AddWithValue("@idCuenta", recibo._idCuenta);
                 command.Parameters.AddWithValue("@Dinero", recibo._dineroRecibo);
                 command.Parameters.AddWithValue("@Activo", recibo._activa);
                 command.Parameters.AddWithValue("@FecRecibo", recibo._fecRecibo);
@@ -114,12 +114,12 @@ class ReciboRepository : IReciboRepository
             using (var command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@nombreRecibo", recibo._nombreRecibo);
-                command.Parameters.AddWithValue("@ID_Usuario", recibo._idUsuario);
-                command.Parameters.AddWithValue("@ID_Cuenta", recibo._idCuenta);
+                command.Parameters.AddWithValue("@idUsuario", recibo._idUsuario);
+                command.Parameters.AddWithValue("@idCuenta", recibo._idCuenta);
                 command.Parameters.AddWithValue("@Dinero", recibo._dineroRecibo);
                 command.Parameters.AddWithValue("@Activo", recibo._activa);
                 command.Parameters.AddWithValue("@FecRecibo", recibo._fecRecibo);
-                command.Parameters.AddWithValue("@ID_Recibo", recibo._idRecibo);
+                command.Parameters.AddWithValue("@idRecibo", recibo._idRecibo);
 
                 await command.ExecuteNonQueryAsync();
             }

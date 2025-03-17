@@ -73,19 +73,19 @@ public class MetaAhorroService : IMetaAhorroService
         await _repository.InicializarDatosAsync();
     }
 
-    public async Task<List<MetaAhorroDTO>> GetByUser(ClaimsPrincipal user)
+    public async Task<List<MetaAhorro>> GetByUser(ClaimsPrincipal user)
     {
 
         var idClaim = user.Claims.FirstOrDefault(c => c.Type ==ClaimTypes.NameIdentifier);
 
         if (idClaim == null)
         {
-            return new List<MetaAhorroDTO>();
+            return new List<MetaAhorro>();
         }
 
         string idUsuario = idClaim.Value;
 
-        List<MetaAhorroDTO> metas = await _repository.GetByUser(idUsuario);
+        List<MetaAhorro> metas = await _repository.GetByUser(idUsuario);
         return metas;
     }
 

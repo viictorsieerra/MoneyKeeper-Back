@@ -87,29 +87,29 @@ class MetaAhorroRepository : IMetaAhorroRepository
         return meta;
     }
 
-   public async Task AddAsync(MetaAhorro meta)
-{
-    using (SqlConnection connection = new SqlConnection(_connectionString))
+    public async Task AddAsync(MetaAhorro meta)
     {
-        await connection.OpenAsync();
-
-        string query = "INSERT INTO MetaAhorro (idUsuario, Nombre, Descripcion, DineroObjetivo, DineroActual, Activo, FecCreacion, FecObjetivo) VALUES (@idUsuario, @Nombre, @Descripcion, @DineroObjetivo, @DineroActual, @Activo, @FecCreacion, @FecObjetivo)";
-
-        using (var command = new SqlCommand(query, connection))
+        using (SqlConnection connection = new SqlConnection(_connectionString))
         {
-            command.Parameters.AddWithValue("@idUsuario", meta._idUsuario);  // Corregido el nombre del parámetro
-            command.Parameters.AddWithValue("@Nombre", meta._nombreMeta);
-            command.Parameters.AddWithValue("@Descripcion", meta._descripcionMeta);
-            command.Parameters.AddWithValue("@DineroObjetivo", meta._dineroObjetivo);
-            command.Parameters.AddWithValue("@DineroActual", meta._dineroActual);
-            command.Parameters.AddWithValue("@Activo", meta._activoMeta);
-            command.Parameters.AddWithValue("@FecCreacion", meta._fechaCreacionMeta);
-            command.Parameters.AddWithValue("@FecObjetivo", meta._fechaObjetivoMeta);
+            await connection.OpenAsync();
 
-            await command.ExecuteNonQueryAsync();
+            string query = "INSERT INTO MetaAhorro (idUsuario, Nombre, Descripcion, DineroObjetivo, DineroActual, Activo, FecCreacion, FecObjetivo) VALUES (@idUsuario, @Nombre, @Descripcion, @DineroObjetivo, @DineroActual, @Activo, @FecCreacion, @FecObjetivo)";
+
+            using (var command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@idUsuario", meta._idUsuario);  // Corregido el nombre del parámetro
+                command.Parameters.AddWithValue("@Nombre", meta._nombreMeta);
+                command.Parameters.AddWithValue("@Descripcion", meta._descripcionMeta);
+                command.Parameters.AddWithValue("@DineroObjetivo", meta._dineroObjetivo);
+                command.Parameters.AddWithValue("@DineroActual", meta._dineroActual);
+                command.Parameters.AddWithValue("@Activo", meta._activoMeta);
+                command.Parameters.AddWithValue("@FecCreacion", meta._fechaCreacionMeta);
+                command.Parameters.AddWithValue("@FecObjetivo", meta._fechaObjetivoMeta);
+
+                await command.ExecuteNonQueryAsync();
+            }
         }
     }
-}
 
     public async Task UpdateAsync(MetaAhorro meta)
     {
@@ -134,22 +134,22 @@ class MetaAhorroRepository : IMetaAhorroRepository
         }
     }
 
-   public async Task DeleteAsync(int idMeta)
+    public async Task DeleteAsync(int idMeta)
     {
-       
+
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
             await connection.OpenAsync();
 
-            
+
             string query = "DELETE FROM MetaAhorro WHERE idMeta = @idMeta";
 
             using (var command = new SqlCommand(query, connection))
             {
-                
+
                 command.Parameters.AddWithValue("@idMeta", idMeta);
 
-                
+
                 await command.ExecuteNonQueryAsync();
             }
         }
@@ -173,44 +173,44 @@ class MetaAhorroRepository : IMetaAhorroRepository
     }
 
 
-  public async Task<List<MetaAhorroDTO>> GetByUser(string idUsuario)
-{
-    List<MetaAhorroDTO> metas = new List<MetaAhorroDTO>();
-
-    using (SqlConnection connection = new SqlConnection(_connectionString))
+    public async Task<List<MetaAhorro>> GetByUser(string idUsuario)
     {
-        await connection.OpenAsync();
+        List<MetaAhorro> metas = new List<MetaAhorro>();
 
-        string query = "SELECT idMeta, Nombre, Descripcion, DineroObjetivo, DineroActual, Activo, FecCreacion, FecObjetivo " +
-                       "FROM MetaAhorro WHERE idUsuario = @idUsuario";
-
-        using (SqlCommand command = new SqlCommand(query, connection))
+        using (SqlConnection connection = new SqlConnection(_connectionString))
         {
-            command.Parameters.AddWithValue("@idUsuario", idUsuario); // Asegúrate que userId es un número entero
+            await connection.OpenAsync();
 
-            using (SqlDataReader reader = await command.ExecuteReaderAsync())
+            string query = "SELECT idMeta, Nombre, Descripcion, DineroObjetivo, DineroActual, Activo, FecCreacion, FecObjetivo " +
+                           "FROM MetaAhorro WHERE idUsuario = @idUsuario";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
-                while (await reader.ReadAsync())
+                command.Parameters.AddWithValue("@idUsuario", idUsuario); // Asegúrate que userId es un número entero
+
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
-                    MetaAhorroDTO meta = new MetaAhorroDTO
+                    while (await reader.ReadAsync())
                     {
-                        idMeta = reader.GetInt32(0),
-                        _nombreMeta = reader.GetString(1),
-                        _descripcionMeta = reader.GetString(2),
-                        _dineroObjetivo = reader.GetDecimal(3),
-                        _dineroActual = reader.GetDecimal(4),
-                        _activoMeta = reader.GetBoolean(5),
-                        _fechaCreacionMeta = reader.GetDateTime(6),
-                        _fechaObjetivoMeta = reader.GetDateTime(7)
-                    };
-                    metas.Add(meta);
+                        MetaAhorro meta = new MetaAhorro
+                        {
+                            _idMeta = reader.GetInt32(0),
+                            _nombreMeta = reader.GetString(1),
+                            _descripcionMeta = reader.GetString(2),
+                            _dineroObjetivo = reader.GetDecimal(3),
+                            _dineroActual = reader.GetDecimal(4),
+                            _activoMeta = reader.GetBoolean(5),
+                            _fechaCreacionMeta = reader.GetDateTime(6),
+                            _fechaObjetivoMeta = reader.GetDateTime(7)
+                        };
+                        metas.Add(meta);
+                    }
                 }
             }
         }
-    }
 
-    return metas;
-}
+        return metas;
+    }
 }
 
 

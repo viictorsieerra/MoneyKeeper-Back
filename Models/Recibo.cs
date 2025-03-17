@@ -13,8 +13,9 @@ public class Recibo
     public DateTime _fecRecibo { get; set; } = DateTime.Now;
 
     public Recibo() { }
-    public Recibo(string nombreRecibo,int idUsuario, int idCuenta, decimal dineroRecibido, bool activa, DateTime fecRecibo)
+    public Recibo(string nombreRecibo, int idRecibo,int idUsuario, int idCuenta, decimal dineroRecibido, bool activa, DateTime fecRecibo)
     {
+        _idRecibo = idRecibo;
         _nombreRecibo = nombreRecibo;
         _idUsuario = idUsuario;
         _idCuenta = idCuenta;

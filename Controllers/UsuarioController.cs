@@ -7,7 +7,7 @@ namespace Controllers;
 
 [Authorize(Roles = "Cliente")]
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UsuarioController : ControllerBase
 {
 

@@ -7,7 +7,7 @@ namespace Controllers;
 
 [Authorize(Roles = "Cliente")]
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class MetaAhorroController : ControllerBase
 {
 
@@ -64,7 +64,7 @@ public class MetaAhorroController : ControllerBase
     }
 
     [HttpGet("metas")]
-    public async Task<ActionResult<List<MetaAhorroDTO>>> GetMisMetas()
+    public async Task<ActionResult<List<MetaAhorro>>> GetMisMetas()
     {
         var metas = await _service.GetByUser(User);
 
