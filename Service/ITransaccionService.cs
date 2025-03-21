@@ -9,7 +9,7 @@ public interface ITransaccionService
     Task<List<Transaccion>> GetAllAsync();
     Task<Transaccion?> GetByIdAsync(int idTransaccion);
     Task<List<TransaccionDTO>> GetByUser(ClaimsPrincipal user);
-    Task<List<TransaccionDTO>> GetByUserFilter(ClaimsPrincipal user, string fechaInicio, string fechaFin);
+    Task<List<TransaccionDTO>> GetByUserFilter(ClaimsPrincipal user, string fechaInicio, string fechaFin, int idCategoria);
     Task<Transaccion> AddAsync(Transaccion bebida);
     Task<Transaccion> UpdateAsync(Transaccion bebida);
     Task DeleteAsync(int id);

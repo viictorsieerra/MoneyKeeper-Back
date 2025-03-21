@@ -124,7 +124,7 @@ class TransaccionRepository : ITransaccionRepository
         return transacciones;
     }
 
-    public async Task<List<TransaccionDTO>> GetByUserFilter(string idUsuario, string fechaInicio, string fechaFin)
+    public async Task<List<TransaccionDTO>> GetByUserFilter(string idUsuario, string fechaInicio, string fechaFin, int idCategoria)
     {
         List<TransaccionDTO> transacciones = new List<TransaccionDTO>();
 
@@ -134,14 +134,49 @@ class TransaccionRepository : ITransaccionRepository
 
             string query = "SELECT ca.Nombre, Cantidad, tr.Descripcion, FecTransaccion, TipoMovimiento, idTransaccion FROM Transaccion tr\n"
                 + "INNER JOIN Usuario us ON tr.idUsuario = us.idUsuario\n" +
-                "INNER JOIN Categoria ca ON tr.idCategoria = ca.idCategoria WHERE us.idUsuario = @id\n"+
-                "AND FecTransaccion BETWEEN  @fechaInicio AND @fechaFin";
+                "INNER JOIN Categoria ca ON tr.idCategoria = ca.idCategoria WHERE us.idUsuario = @id\n";
+            if (idCategoria > 0)
+            {
+                query += "\nAND tr.idCategoria = @idCategoria";
+            }
+
+            if (!string.IsNullOrEmpty(fechaInicio) && fechaInicio != "undefined" && !string.IsNullOrEmpty(fechaFin) && fechaFin != "undefined")
+            {
+                query += "\nAND FecTransaccion BETWEEN  @fechaInicio AND @fechaFin";
+            }
+            else if (!string.IsNullOrEmpty(fechaInicio) && fechaInicio != "undefined")
+            {
+                query += "\nAND FecTransaccion >= @fechaInicio";
+            }
+            else if (!string.IsNullOrEmpty(fechaFin) && fechaFin != "undefined")
+            {
+                query += "\nAND FecTransaccion >= @fechaFin";
+            }
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@id", idUsuario);
-                command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
-                command.Parameters.AddWithValue("@fechaFin", fechaFin);
+
+                if (idCategoria > 0)
+                {
+                    command.Parameters.AddWithValue("@idCategoria", idCategoria);
+                }
+
+                if (!string.IsNullOrEmpty(fechaInicio) && fechaInicio != "undefined" && !string.IsNullOrEmpty(fechaFin) && fechaFin != "undefined")
+                {
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                }
+
+                else if (!string.IsNullOrEmpty(fechaInicio) && fechaInicio != "undefined")
+                {
+                    command.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                }
+
+                else if (!string.IsNullOrEmpty(fechaFin) && fechaFin != "undefined")
+                {
+                    command.Parameters.AddWithValue("@fechaFin", fechaFin);
+                }
 
                 using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {

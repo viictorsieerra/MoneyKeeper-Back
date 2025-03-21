@@ -48,9 +48,9 @@ public class TransaccionController : ControllerBase
         return Ok(transacciones);
     }
         [HttpGet("filtro")]
-    public async Task<ActionResult<List<TransaccionDTO>>> GetMisTransaccionesFiltradas(string fechaInicio, string fechaFin)
+    public async Task<ActionResult<List<TransaccionDTO>>> GetMisTransaccionesFiltradas(string fechaInicio, string fechaFin, int idCategoria)
     {
-        var transacciones = await _service.GetByUserFilter(User, fechaInicio, fechaFin);
+        var transacciones = await _service.GetByUserFilter(User, fechaInicio, fechaFin, idCategoria);
 
         if (transacciones == null || transacciones.Count == 0)
         {
