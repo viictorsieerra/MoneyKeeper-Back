@@ -57,7 +57,10 @@ public class MetaAhorroService : IMetaAhorroService
         existingMetaAhorro._fechaCreacionMeta = updatedMetaAhorro._fechaCreacionMeta;
         existingMetaAhorro._fechaObjetivoMeta = updatedMetaAhorro._fechaObjetivoMeta;
 
-
+        if (existingMetaAhorro._dineroActual > existingMetaAhorro._dineroObjetivo)
+        {
+            existingMetaAhorro._activoMeta = false;
+        }
         await _repository.UpdateAsync(existingMetaAhorro);
 
         return existingMetaAhorro;
