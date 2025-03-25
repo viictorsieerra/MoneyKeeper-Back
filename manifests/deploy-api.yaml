@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-deploy
+  name: api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api-app
+      app: api
   template:
     metadata:
       labels:
-        app: api-app
+        app: api
     spec:
       containers:
-      - name: api-app
-        image: a27300/moneykeeper:back
+      - name: api
+        image: a27300/moneykeeper-back:00
         ports:
         - containerPort: 8080
