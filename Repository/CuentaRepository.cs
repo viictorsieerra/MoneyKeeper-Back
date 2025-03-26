@@ -178,7 +178,8 @@ public async Task<List<CuentaDTO>> GetByUser(string idUsuario)
             await connection.OpenAsync();
 
              string query = "SELECT CU.idCuenta, CU.dinero, CU.activo, CU.fecCreacion, CU.nombre FROM Cuenta CU\n" + 
-                            "INNER JOIN Usuario us ON CU.idUsuario = US.idUsuario\n";
+                            "INNER JOIN Usuario us ON CU.idUsuario = US.idUsuario\n" +
+                            "WHERE CU.idUsuario = @id";
  
             using (SqlCommand command = new SqlCommand(query, connection))
             {
