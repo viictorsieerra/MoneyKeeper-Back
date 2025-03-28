@@ -1,0 +1,23 @@
+CREATE TABLE Presupuestos(
+    IdPresupuesto INT IDENTITY(1,1) PRIMARY KEY,
+    IdUsuario INT NOT NULL,
+	IdCategoria INT NOT NULL DEFAULT 4,
+    Nombre NVARCHAR(75) NOT NULL DEFAULT 'Presupuesto',
+    Limite DECIMAL(10,2) NOT NULL DEFAULT 10000,
+	DineroActual DECIMAL(10,2) NOT NULL DEFAULT 0,
+    FecCreacion DATETIME DEFAULT GETDATE(),
+    Activo BIT DEFAULT 1,
+	FOREIGN KEY (IdCategoria) REFERENCES Categoria(IdCategoria) ON DELETE SET NULL,
+    FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario) ON DELETE SET NULL
+);
+
+
+CREATE TABLE Gastos(
+	IdGasto INT IDENTITY(1,1) PRIMARY KEY,
+    IdPresupuesto INT NOT NULL,
+    Nombre NVARCHAR(75) NOT NULL DEFAULT 'Gasto',
+	Descripcion NVARCHAR(200) NOT NULL DEFAULT 'Gasto',
+    Cantidad DECIMAL(10,2) NOT NULL DEFAULT 0,
+    FecCreacion DATETIME DEFAULT GETDATE(),
+	FOREIGN KEY (IdPresupuesto) REFERENCES Presupuestos(IdPresupuesto) ON DELETE CASCADE
+);

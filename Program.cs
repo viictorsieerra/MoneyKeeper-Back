@@ -51,6 +51,16 @@ builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 
 builder.Services.AddScoped<IJwtService, JwtService>();
 
+builder.Services.AddScoped<IGastoRepository, GastoRepository>(
+    provider => new GastoRepository(connectionString)
+);
+builder.Services.AddScoped<IGastoService, GastoService>();
+
+builder.Services.AddScoped<IPresupuestoRepository, PresupuestoRepository>(
+    provider => new PresupuestoRepository(connectionString)
+);
+builder.Services.AddScoped<IPresupuestoService, PresupuestoService>();
+
 // Añadir JWT
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
